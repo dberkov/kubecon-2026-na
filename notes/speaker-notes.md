@@ -53,11 +53,21 @@ Eventually the user stops sending input, the timeout expires, conversation histo
 ## Slide 13 | 13. Cluster Scale | Speaker: TIM / DIMA
 This happens for every agent instance: poor utilization, long-tail UX latency, K8s scheduling throughput struggles on bursts, and a single Kubernetes cluster can only host a few hundred thousand pods.
 
-## Slide 14 | 14. DIY Giant Pod | Speaker: TIM / DIMA
-A second approach we saw was mostly from very sophisticated users. They build a DIY system on top of Kubernetes: typically one giant workload per machine which consumes most of the resources, with a custom 'manager' app inside.
+## Slide 14 | 14. DIY Giant Pod | Speaker: DIMA
+A second approach we saw, was mostly from very sophisticated users
+They build a DIY system on top of Kubernetes
+Typically this looks like one giant workload per machine
+which consumes most of the resources
+Inside that workload is a “manager” app
 
-## Slide 15 | 15. Black-Box Tax | Speaker: TIM / DIMA
-A bespoke control plane schedules agents into sandboxes and manages their lifecycle. Everything is basically opaque — you end up reinventing large parts of Kubernetes, which is complex to build and manage, especially for startups.
+## Slide 15 | 15. Black-Box Tax | Speaker: DIMA
+A bespoke control plane is responsible for scheduling agents into sandboxes
+The manager manages the lifecycle of the sandboxes
+Everything is basically opaque
+You end up reinventing large parts of kubernetes
+This is pretty complex to build and manage
+Especially for smaller companies
+Like startups
 
 ## Slide 16 | 16. Agent Substrate | Speaker: DIMA & TIM
 And so this is the point where we decided we need to do better. We do not think people who just want to run agents should have to choose between a decent UX or an affordable bill, or between hitting hard limits or maintaining a proprietary orchestrator. That is why we built and open-sourced Agent Substrate.
