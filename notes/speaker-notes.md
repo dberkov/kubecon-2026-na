@@ -15,12 +15,18 @@ Late last year and early this year, we both started looking at the same set of p
 Kubernetes is the undisputed standard for deploying container workloads — including AI inference servers and training jobs. Naturally, teams building AI agents want to run them on the same infrastructure. But over the course of this year we saw people struggling: three characteristics immediately stand out.
 
 ## Slide 3 | 3. Bursty & Idle | Speaker: DIMA
-First, agentic apps tend to be very bursty. They wake up, run for a bit, and then go idle. They can be idle for minutes or hours or even days at a time.
+First, agentic apps tend to be very bursty. 
+They wake up, run for a bit, and then go idle. 
+They can be idle for minutes or hours or even days at a time.
 
 ## Slide 4 | 4. Untrusted | Speaker: DIMA
-Second: agentic workloads are generally untrusted. One of the most significant aspects of agents is that they invent code and then run it — code that no human has ever seen. Because of that, they have to run in secure single-tenant sandboxes, which means we miss out on opportunities for amortization.
+Second: agentic workloads are generally untrusted. 
+One of the most significant aspects of agents is that they invent code and then run it
+Code that no human has ever seen. 
+Because of that, they have to run in secure single-tenant sandboxes
+which means we miss out on opportunities for amortization.
 
-## Slide 5 | 5. Human Latency | Speaker: DIMA
+## Slide 5 | 5. Human Oriented | Speaker: DIMA
 Third, they tend to have humans in the loop, which makes them very sensitive to perceived latency.
 
 ## Slide 6 | 6. K8s Fractures | Speaker: TIM
