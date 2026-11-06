@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Security: script-src 'self' blocks all inline/injected scripts; style-src retains 'unsafe-inline' strictly for SVG CSS-variable presentation attributes (style="fill: var(--s-blue)"). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';" />
+  <title>KubeCon NA 2026 — Kubernetes Solutions for Agent-Shaped Problems (31 Slides)</title>
+  <link rel="stylesheet" href="./styles/deck.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Presenter Console Header (Visible in ?mode=speaker) -->
+    <div class="spk-only spk-topbar hide-in-present">
+      <div class="brand-row">
+        <span class="badge-pill" style="background:#0f766e">Presenter Console</span>
+        <span id="spk-sync-pill" class="sync-pill">&#9675; Waiting for Stage</span>
+        <button id="spk-open-stage" class="btn btn-primary" title="Open clean 16:9 Stage window for external HDMI projector">Open Stage Window &#8599;</button>
+      </div>
+
+      <div class="spk-timer-group">
+        <span id="spk-clock" class="spk-clock">00:00</span>
+        <span id="spk-timer" class="spk-timer-readout" title="Elapsed talk time (30:00 KubeCon slot)">00:00</span>
+        <button id="spk-timer-toggle" class="btn" style="padding:4px 9px;font-size:11.5px">&#9654; Start</button>
+        <button id="spk-timer-reset" class="btn" style="padding:4px 8px;font-size:11.5px">Reset</button>
+      </div>
+
+      <div class="ctrl-group">
+        <button id="spk-prev" class="btn">&larr; Prev</button>
+        <span id="spk-counter" class="counter-chip">Slide 1 / 31</span>
+        <button id="spk-next" class="btn btn-primary">Next &rarr;</button>
+        <button id="spk-replay" class="btn" title="Replay animation on both screens (R)">&#8635; Replay</button>
+        <button id="spk-theme" class="btn">Theme: Light</button>
+        <button id="spk-exit" class="btn" title="Switch this window back to Default Overview">Overview</button>
+      </div>
+    </div>
+
+    <!-- Top Control Bar (Default Mode) -->
+    <div class="top-bar hide-in-present hide-in-speaker">
+      <div>
+        <div class="brand-row">
+          <span class="badge-pill">Interactive Deck &middot; 31 Slides</span>
+          <h1 class="top-title">KubeCon NA 2026 — Kubernetes Solutions for Agent-Shaped Problems</h1>
+          <span id="sync-pill" class="sync-pill">&#9675; 1 Window</span>
+        </div>
+        <p class="top-hint">
+          <kbd>Space</kbd> / <kbd>&larr;</kbd> <kbd>&rarr;</kbd> step &middot; <kbd>S</kbd> Speaker Notes Console &middot; <kbd>G</kbd> Audience Stage Window &middot; <kbd>F</kbd> Fullscreen &middot; <kbd>R</kbd> Replay &middot; <kbd>E</kbd> Edit Notes.
+        </p>
+      </div>
+
+      <div class="ctrl-group">
+        <button id="btn-prev" class="btn">&larr; Prev</button>
+        <span id="step-counter" class="counter-chip">Slide 1 / 31</span>
+        <button id="btn-next" class="btn btn-primary">Next &rarr;</button>
+        <button id="btn-replay" class="btn" title="Replay current slide animation">&#8635; Replay</button>
+        <button id="btn-autoplay" class="btn">&#9654; Auto-Play</button>
+        <button id="btn-theme" class="btn">Theme: Light</button>
+        <button id="btn-speaker" class="btn btn-speaker" title="Open synced Presenter Console for laptop screen (S)">Speaker View (S)</button>
+        <button id="btn-stage-win" class="btn" title="Open chromeless Audience Stage window for external monitor (G)">Stage Window</button>
+        <button id="btn-present" class="btn">&#9974; Present</button>
+      </div>
+    </div>
+
+    <!-- 6-Chapter Navigator + 31-Slide Pills -->
+    <div class="nav-panel hide-in-present hide-in-speaker">
+      <div id="chapter-tabs" class="chapter-tabs"></div>
+      <div id="beat-strip" class="beat-strip"></div>
+    </div>
+
+    <!-- Responsive Workspace (1-Col Default/Stage, 2-Col Presenter Console) -->
+    <div class="workspace-grid">
+      <div class="stage-col">
+        <div class="spk-only spk-section-label hide-in-present">
+          <span>Live Projector Mirror (Synced)</span>
+          <span id="spk-chapter-label">Chapter I &middot; Slides 1–6</span>
+        </div>
+
+        <!-- 16:9 Presentation Stage -->
+        <div id="stage-container" class="stage-wrap" data-deck-theme="light">
+          <svg id="stage" class="talk-stage" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#64748b" />
+              </marker>
+              <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#1a73e8" />
+              </marker>
+              <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#9334e6" />
+              </marker>
+              <pattern id="waste-hatch" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="0" y2="12" stroke="#d93025" stroke-width="2.5" stroke-opacity="0.3" />
+              </pattern>
+              <marker id="arr-slate" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#475569" />
+              </marker>
+              <marker id="arr-dark" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#1e293b" />
+              </marker>
+              <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#1a73e8" />
+              </marker>
+              <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#1e8e3e" />
+              </marker>
+              <marker id="arr-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#9334e6" />
+              </marker>
+              <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#e37400" />
+              </marker>
+            </defs>
+
+            <!-- Shared Content Header (y=0..128) -->
+            <g id="slide-header" class="fade-group is-hidden">
+              <text id="hdr-kicker" x="64" y="58" font-size="17" font-weight="700" letter-spacing="1.8" style="fill: var(--s-blue)">THE KUBERNETES BASELINE</text>
+              <text id="hdr-title" x="64" y="104" font-size="34" font-weight="700">Kubernetes runs modern cloud &amp; AI — so teams bring Agents</text>
+              <line x1="64" y1="128" x2="1536" y2="128" style="stroke: var(--s-border); stroke-width: 1.5; opacity: 0.65" />
+            </g>
+
+            <!-- Active Per-Slide Mount Point (populated via XML DOMParser + replaceChildren) -->
+            <g id="slide-mount" class="scene-layer"></g>
+
+            <!-- Shared Bottom Narrative Banner (y=694..842) -->
+            <g id="bottom-callout" class="fade-group is-hidden">
+              <rect x="64" y="694" width="1472" height="148" rx="18" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 1.8" />
+              <rect id="callout-accent" x="64" y="694" width="10" height="148" rx="5" style="fill: var(--s-blue)" />
+              <text id="callout-headline" x="98" y="738" font-size="22" font-weight="700">Headline</text>
+              <text id="callout-body-1" x="98" y="774" font-size="18" style="fill: var(--s-muted)">Body line 1</text>
+              <text id="callout-body-2" x="98" y="806" font-size="18" style="fill: var(--s-muted)">Body line 2</text>
+              <text x="1510" y="822" font-size="16" font-weight="700" text-anchor="end" style="fill: var(--s-muted); opacity: 0.7">Google Cloud &middot; KubeCon NA</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Up-Next Card (Visible in Presenter Console ?mode=speaker) -->
+        <div class="spk-only up-next-card hide-in-present">
+          <div class="up-next-top">
+            <span id="up-next-kicker" class="up-next-kicker">UP NEXT ON CLICK &rarr; SLIDE 2 / 31</span>
+            <span id="handoff-badge" class="handoff-badge">&#9889; HANDOFF</span>
+          </div>
+          <div id="up-next-title" class="up-next-title">2. K8s Baseline</div>
+          <div id="up-next-cue" class="up-next-cue"></div>
+        </div>
+      </div>
+
+      <!-- Synced Speaker Script (Footer in Default Mode, Right Column in Presenter Console) -->
+      <div class="notes-card hide-in-present">
+        <div class="notes-meta" style="justify-content:space-between;width:100%">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span id="speaker-badge" class="speaker-badge">TIM &amp; DIMA</span>
+            <span id="slide-ref" class="slide-ref-tag">Slide 1 of 31</span>
+            <span id="notes-source-pill" class="notes-source-pill">Embedded Notes</span>
+          </div>
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            <button id="btn-edit-note" class="btn" style="padding:3px 9px;font-size:11.5px" title="Edit this slide's speaker &amp; script inline (E)">&#9998; Edit (E)</button>
+            <button id="btn-export-notes" class="btn" style="padding:3px 9px;font-size:11.5px" title="Download full speaker-notes.md file to save into notes/">&#11015; speaker-notes.md</button>
+            <button id="btn-reset-notes" class="btn" style="padding:3px 8px;font-size:11.5px;display:none" title="Discard browser edits and reload from speaker-notes.md">Reset</button>
+            <div class="spk-only" style="gap:5px;align-items:center">
+              <button id="btn-font-dec" class="btn" style="padding:3px 8px;font-size:11.5px" title="Smaller speaker notes font">A&minus;</button>
+              <button id="btn-font-inc" class="btn" style="padding:3px 8px;font-size:11.5px" title="Larger speaker notes font">A+</button>
+            </div>
+          </div>
+        </div>
+
+        <p id="speaker-notes" class="notes-text" title="Click 'Edit (E)' or double-click text to edit speaker notes"></p>
+
+        <!-- Inline Speaker Note Editor -->
+        <div id="note-editor-box" class="note-editor-box">
+          <div class="note-editor-row">
+            <div style="display:flex;align-items:center;gap:8px">
+              <label for="edit-speaker-select" style="font-size:12px;font-weight:700;color:#cbd5e1">Speaker:</label>
+              <select id="edit-speaker-select" class="note-speaker-select">
+                <option value="TIM">TIM</option>
+                <option value="DIMA">DIMA</option>
+                <option value="TIM &amp; DIMA">TIM &amp; DIMA</option>
+                <option value="DIMA &amp; TIM">DIMA &amp; TIM</option>
+                <option value="TIM / DIMA">TIM / DIMA</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button id="btn-note-save" class="btn btn-primary" style="padding:4px 11px;font-size:12px">Save (Ctrl+Enter)</button>
+              <button id="btn-note-cancel" class="btn" style="padding:4px 10px;font-size:12px">Cancel (Esc)</button>
+            </div>
+          </div>
+          <textarea id="edit-note-textarea" class="note-textarea" spellcheck="true"></textarea>
+        </div>
+
+        <!-- Key Slide Takeaways (Presenter Console Aid) -->
+        <div id="spk-bullets-box" class="spk-only spk-bullets-box">
+          <span class="spk-bullets-hdr">On-Slide Takeaway Summary</span>
+          <div id="spk-bullet-main" class="spk-bullet-main"></div>
+          <div id="spk-bullet-sub1" class="spk-bullet-sub"></div>
+          <div id="spk-bullet-sub2" class="spk-bullet-sub"></div>
+        </div>
+
+        <!-- Quick-Jump Strip inside Presenter Console -->
+        <div class="spk-only spk-jump-wrap">
+          <span class="spk-bullets-hdr">Quick Jump Across All 31 Slides (Syncs Projector Immediately)</span>
+          <div id="spk-jump-grid" class="spk-jump-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Minimal Floating HUD when in Stage / Fullscreen Presentation Mode -->
+  <div class="present-hud">
+    <button id="hud-prev" class="btn">&larr;</button>
+    <span id="hud-counter" style="font-size:12px;font-weight:700;padding:0 6px;">1 / 31</span>
+    <button id="hud-next" class="btn btn-primary">&rarr;</button>
+    <button id="hud-fs" class="btn" title="Toggle OS Fullscreen (F)">&#9974; Fullscreen</button>
+    <button id="hud-exit" class="btn">Exit Stage</button>
+  </div>
+
+  <script type="module" src="./app/deck.js"></script>
+</body>
+</html>
