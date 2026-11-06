@@ -1,6 +1,6 @@
 # KubeCon NA 2026 — Kubernetes Solutions for Agent-Shaped Problems
 
-Interactive web presentation & dual-screen Presenter Console for **Dmitry Berkovitch** (`<dberkov@google.com>`) and **Tim Hockin** (`<thockin@google.com>`).
+Interactive web presentation & dual-screen Presenter Console for **Dmitry Berkovich** (`<dberkov@google.com>`) and **Tim Hockin** (`<thockin@google.com>`).
 
 ---
 

@@ -20,7 +20,7 @@ export default {
   <text x="88" y="266" font-size="74" font-weight="700" style="fill: var(--s-blue)">Kubernetes Solutions for</text>
   <text x="88" y="358" font-size="74" font-weight="700" style="fill: var(--s-blue)">Agent-Shaped Problems</text>
   <text x="88" y="454" font-size="40" font-weight="500" style="fill: var(--s-muted)">Is Kubernetes Good For Agents?</text>
-  <text x="88" y="654" font-size="26" font-weight="500" style="fill: var(--s-blue)">Dmitry Berkovitch &lt;dberkov@google.com&gt;</text>
+  <text x="88" y="654" font-size="26" font-weight="500" style="fill: var(--s-blue)">Dmitry Berkovich &lt;dberkov@google.com&gt;</text>
   <text x="88" y="696" font-size="26" font-weight="500" style="fill: var(--s-blue)">Tim Hockin &lt;thockin@google.com&gt;</text>
   <g id="title-sticker" transform="translate(1156, 456)">
     <image id="img-title-hex" x="0" y="0" width="410" height="410" preserveAspectRatio="xMidYMid meet" href="./assets/k8s-hex.png" />
