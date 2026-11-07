@@ -8,7 +8,7 @@ export default {
   headline: "Atenet is Substrate's networking layer: two Envoy gateways",
   body1: "atenet-router wakes a sleeping actor when a request arrives and routes it to the right worker.",
   body2: "atenet-egress checks every outbound call against policy and injects credentials outside the sandbox.",
-  notes: "Fifth, Atenet:\nThis is the networking layer of Substrate\nIt's built on Envoy, and it has two parts\natenet-router sits in front of the actors\nWhen a request comes in for a sleeping actor, it wakes the actor up and routes the traffic to the right worker\natenet-egress sits on the way out\nEvery outbound call goes through it: it checks the actor's egress policy and can inject credentials\nSo secrets never live inside the sandbox\nNow, let’s look at how those pieces fit together (Handoff to Tim)",
+  notes: "Fifth, Atenet:\nThis is the networking layer of Substrate\nIt has two parts\natenet-router sits in front of the actors\nWhen a request comes in for a sleeping actor, it wakes the actor up and routes the traffic to the right worker\natenet-egress sits on the way out\nEvery outbound call goes through it: it checks the actor's egress policy and can inject credentials\nSo secrets never live inside the sandbox\nNow, let’s look at how those pieces fit together (Handoff to Tim)",
   svg: `
   <!-- Terminology progress -->
   <rect x="64" y="176" width="272" height="46" rx="23" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.4" />

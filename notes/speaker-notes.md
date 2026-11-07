@@ -119,7 +119,7 @@ Workers can't do this themselves, because they don't have permission
 ## Slide 25 | 25. Term: Atenet | Speaker: DIMA
 Fifth, Atenet:
 This is the networking layer of Substrate
-It's built on Envoy, and it has two parts
+It has two parts
 atenet-router sits in front of the actors
 When a request comes in for a sleeping actor, it wakes the actor up and routes the traffic to the right worker
 atenet-egress sits on the way out
