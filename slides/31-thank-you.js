@@ -8,7 +8,7 @@ export default {
   takeaways: {"main": "Closing & Q&A — http://ate.dev (100% Apache 2.0 Open Source)", "sub1": "Security (gVisor/uVM + PEP)  ·  Density (Off-CPU Snapshots)  ·  Speed (~100ms Wakeups).", "sub2": "Use Quick Jump pills below to pull up any architecture diagram immediately during Q&A."},
   svg: `
   <g id="thanks-octo-wrap" class="fade-group float-slow">
-    <image id="img-thanks-octo" x="576" y="42" width="448" height="448" preserveAspectRatio="xMidYMid meet" href="./assets/octopus-qa.png" />
+    <image id="img-thanks-octo" x="576" y="42" width="448" height="448" preserveAspectRatio="xMidYMid meet" href="./assets/yolo-mic.png" />
   </g>
   <text x="800" y="566" text-anchor="middle" font-size="72" font-weight="800">Thank you!</text>
   <rect x="380" y="612" width="840" height="88" rx="18" style="fill: var(--s-blue-fill); stroke: var(--s-blue); stroke-width: 2.5" />
