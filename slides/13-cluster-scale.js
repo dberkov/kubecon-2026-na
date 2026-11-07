@@ -34,9 +34,9 @@ export default {
     <line x1="1252" y1="292" x2="1512" y2="292" style="stroke: var(--s-border); stroke-width: 1.5; stroke-dasharray: 5 5" />
     <text x="1512" y="282" font-size="12" font-weight="700" text-anchor="end" style="fill: var(--s-muted)">CAPACITY</text>
     <g id="waste-overlay" class="fade-group">
-      <text x="1252" y="282" font-size="12" font-weight="700" style="fill: var(--s-red)">⚠ IDLE WASTE</text>
       <rect id="waste-box-cpu" x="1318" y="378" width="44" height="178" rx="4" fill="url(#waste-hatch)" stroke="#d93025" stroke-width="1.2" stroke-dasharray="4 3" />
       <rect id="waste-box-mem" x="1448" y="356" width="44" height="18" rx="4" fill="url(#waste-hatch)" stroke="#d93025" stroke-width="1.2" stroke-dasharray="4 3" />
+      <text x="1340" y="440" text-anchor="middle" font-size="15" font-weight="800" letter-spacing="2" transform="rotate(-90 1340 440)" style="fill: var(--s-red)">IDLE WASTE</text>
     </g>
     <rect id="bar-cpu-res" class="bar-rect" x="1268" y="568" width="44" height="2" rx="5" style="fill: var(--s-res-bar); stroke: var(--s-res-stroke); stroke-width: 1.5" />
     <rect id="bar-cpu-used" class="bar-rect" x="1318" y="568" width="44" height="2" rx="5" style="fill: var(--s-used-bar); stroke: var(--s-used-stroke); stroke-width: 1.5" />
