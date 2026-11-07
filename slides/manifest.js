@@ -23,11 +23,8 @@ import s22 from "./22-term-template.js";
 import s23 from "./23-term-worker.js";
 import s24 from "./24-term-atelet.js";
 import s25 from "./25-term-atenet.js";
-import s26 from "./26-off-cpu-suspend.js";
 import s27 from "./27-cluster-multiplex.js";
-import s28 from "./28-speed-resume.js";
 import s29 from "./29-snapshots-v2.js";
-import s30 from "./30-security-pep.js";
 import s31 from "./31-thank-you.js";
 
 export const SLIDES = [
@@ -56,10 +53,7 @@ export const SLIDES = [
   s23,
   s24,
   s25,
-  s26,
   s27,
-  s28,
   s29,
-  s30,
   s31,
 ];

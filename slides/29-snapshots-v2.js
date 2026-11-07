@@ -1,6 +1,6 @@
 export default {
   chapter: 5,
-  short: "29. Wake Up Fast, Anywhere",
+  short: "27. Wake Up Fast, Anywhere",
   speaker: "DIMA",
   kicker: "GOAL: SPEED",
   title: "Wake up fast, anywhere",

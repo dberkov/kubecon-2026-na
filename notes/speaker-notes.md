@@ -128,10 +128,7 @@ So secrets never live inside the sandbox
 And that's our first goal: security
 Now, let’s look at the other two goals: density and speed 
 
-## Slide 26 | 26. Off-CPU Suspend | Speaker: DIMA
-First, Density. We cannot store millions of actors in Kubernetes etcd — so ateapi uses Postgres to store billions of actor records with zero etcd overhead. When an actor goes idle, SuspendActor takes a snapshot, immediately removes the actor from CPU and memory, and returns the Worker slot to the idle pool so the actor costs zero compute while idle.
-
-## Slide 27 | 27. Millions Asleep, Few Awake | Speaker: DIMA
+## Slide 26 | 26. Millions Asleep, Few Awake | Speaker: DIMA
 Let's go back to our first goal: Density
 On the previous slides we followed one actor on one node: resume, run, suspend
 Now let's zoom out to the whole cluster
@@ -141,10 +138,7 @@ Only the active actors take a slot on a worker
 When an actor wakes up, it resumes into a free slot. When it goes idle, it's suspended back to storage
 So a small pool of workers can serve millions of actors
 
-## Slide 28 | 28. Speed: Resume | Speaker: DIMA
-That brings us to Speed: if idle actors are removed from CPU, how do we put them back on CPU fast enough that nobody notices? A resume can be triggered automatically when traffic hits the Envoy ingress gateway — which holds the request while calling Resume on ateapi — or explicitly via gRPC. The Worker restores state from the snapshot and forwards the held traffic immediately.
-
-## Slide 29 | 29. Wake Up Fast, Anywhere | Speaker: DIMA
+## Slide 27 | 27. Wake Up Fast, Anywhere | Speaker: DIMA
 Let's zoom in on a snapshot. This is where Speed comes from
 An actor's truth is small: its image and its volumes. Memory and the container layer are just accelerators
 On resume, we reuse every layer that still matches
@@ -154,8 +148,5 @@ First it stays in a local cache on the node. Later, in the background, it's uplo
 On resume, we go back to the same node if the snapshot is still in its local cache and the node has room. That's the fastest path
 Otherwise, we pick a new worker, and it downloads the snapshot from durable storage
 
-## Slide 30 | 30. Security: PEP | Speaker: DIMA
-Finally, Security. Actors run untrusted code inside a gVisor or microVM sandbox with no direct network access — all ingress goes through the Envoy gateway over a tunnel. Most importantly, we store zero credentials inside the actor itself, so prompt injection cannot steal keys and snapshots never leak secrets. Outbound traffic tunnels to the Egress Gateway (PEP), which injects credentials from the Secret Store before forwarding to External APIs.
-
-## Slide 31 | 31. Thank You! | Speaker: TIM
+## Slide 28 | 28. Thank You! | Speaker: TIM
 Thank you! Agent Substrate is 100% Apache 2.0 open source at http://ate.dev — we would love for you to try it, break it, and build with us. Happy to take your questions!
