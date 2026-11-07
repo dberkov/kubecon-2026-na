@@ -5,7 +5,7 @@ export default {
   kicker: "TERMINOLOGY · 5 OF 5",
   title: "Atenet: traffic in, traffic out",
   accent: "var(--s-green)",
-  headline: "Atenet is Substrate's networking layer: two Envoy gateways",
+  headline: "Atenet is Substrate's networking layer: one gateway in, one gateway out",
   body1: "atenet-router wakes a sleeping actor when a request arrives and routes it to the right worker.",
   body2: "atenet-egress checks every outbound call against policy and injects credentials outside the sandbox.",
   notes: "Fifth, Atenet:\nThis is the networking layer of Substrate\nIt has two parts\natenet-router sits in front of the actors\nWhen a request comes in for a sleeping actor, it wakes the actor up and routes the traffic to the right worker\natenet-egress sits on the way out\nEvery outbound call goes through it: it checks the actor's egress policy and can inject credentials\nSo secrets never live inside the sandbox\nNow, let’s look at how those pieces fit together (Handoff to Tim)",
@@ -40,8 +40,7 @@ export default {
 
   <!-- atenet-router -->
   <rect id="rt" class="smooth-box" x="290" y="360" width="300" height="320" rx="20" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 3" />
-  <text x="440" y="404" text-anchor="middle" font-size="25" font-weight="800" class="mono" style="fill: var(--s-green-dark)">atenet-router</text>
-  <text x="440" y="430" text-anchor="middle" font-size="15" font-weight="700" style="fill: var(--s-muted)">Envoy</text>
+  <text x="440" y="414" text-anchor="middle" font-size="25" font-weight="800" class="mono" style="fill: var(--s-green-dark)">atenet-router</text>
   <g id="rt-c0" class="fade-group" style="opacity: 0.35">
     <rect x="316" y="512" width="248" height="56" rx="12" style="fill: var(--s-card); stroke: var(--s-green); stroke-width: 1.6" />
     <text x="440" y="547" text-anchor="middle" font-size="19" font-weight="700">wakes the actor</text>
@@ -63,8 +62,7 @@ export default {
 
   <!-- atenet-egress -->
   <rect id="eg" class="smooth-box" x="1010" y="360" width="300" height="320" rx="20" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 3" />
-  <text x="1160" y="404" text-anchor="middle" font-size="25" font-weight="800" class="mono" style="fill: var(--s-green-dark)">atenet-egress</text>
-  <text x="1160" y="430" text-anchor="middle" font-size="15" font-weight="700" style="fill: var(--s-muted)">Envoy</text>
+  <text x="1160" y="414" text-anchor="middle" font-size="25" font-weight="800" class="mono" style="fill: var(--s-green-dark)">atenet-egress</text>
   <g id="eg-c0" class="fade-group" style="opacity: 0.35">
     <rect x="1036" y="512" width="248" height="56" rx="12" style="fill: var(--s-card); stroke: var(--s-green); stroke-width: 1.6" />
     <text x="1160" y="547" text-anchor="middle" font-size="19" font-weight="700">checks policy</text>
