@@ -23,7 +23,7 @@ Both browser windows synchronize automatically in real time via `BroadcastChanne
 
 ## Repository Structure (Built for Parallel Editing)
 
-Each of the **31 slides** is an independent ES module in [`slides/`](./slides) owning its own SVG diagram, metadata, speaker script, and animation function:
+Each of the **28 slides** is an independent ES module in [`slides/`](./slides) owning its own SVG diagram, metadata, speaker script, and animation function:
 
 ```text
 ├── index.html                  # Presentation stage, Presenter Console & inline note editor
@@ -34,7 +34,7 @@ Each of the **31 slides** is an independent ES module in [`slides/`](./slides) o
 │   ├── ctx.js                  # Auto-cleaned animation timers & SVG helpers passed to slide.animate(ctx)
 │   └── deck.js                 # XML DOMParser slide mounter, keyboard shortcuts & dual-screen sync
 ├── slides/
-│   ├── manifest.js             # Ordered list of all 31 slides
+│   ├── manifest.js             # Ordered list of all slides
 │   ├── 01-title.js             # Chapters I–VI: 1 self-contained file per slide!
 │   ├── ...
 │   └── 28-thank-you.js
@@ -43,7 +43,7 @@ Each of the **31 slides** is an independent ES module in [`slides/`](./slides) o
 ├── kind-deploy/                # Offline-safe Kubernetes (kind) laptop deployment for live stage
 ├── scripts/
 │   ├── serve.sh                # Local HTTP server bound strictly to 127.0.0.1:8080
-│   ├── validate.mjs            # Validates all 31 slides (ES imports, XML syntax, assets & security)
+│   ├── validate.mjs            # Validates all slides (ES imports, XML syntax, assets & security)
 │   └── bundle-single-html.mjs  # Packs everything into dist/kubecon_slides_full_website.html
 └── AGENTS.md                   # Shared layout, palette & animation rules for AI sessions (Jetski/Gemini/Claude)
 ```
@@ -98,7 +98,7 @@ node ./scripts/bundle-single-html.mjs
 | :--- | :--- |
 | `Space` / `→` / `PageDown` | Next slide (syncs across Speaker & Stage windows) |
 | `←` / `PageUp` | Previous slide |
-| `Home` / `End` | Jump to Slide 1 / Slide 31 |
+| `Home` / `End` | Jump to the first / last slide |
 | `S` | Open synced **Presenter Console** window (`?mode=speaker`) |
 | `G` | Open clean **Audience Stage** window (`?mode=stage`) |
 | `F` | Toggle fullscreen presentation mode |

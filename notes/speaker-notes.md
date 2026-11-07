@@ -1,4 +1,4 @@
-# KubeCon NA 2026 — Speaker Notes (Complete Deck: 31 Slides)
+# KubeCon NA 2026 — Speaker Notes (Complete Deck: 28 Slides)
 
 <!--
 HOW TO EDIT THIS FILE:

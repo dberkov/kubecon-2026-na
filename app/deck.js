@@ -154,7 +154,7 @@ function renderBeat(idx) {
   } else {
     el("up-next-kicker").textContent = `END OF PRESENTATION (${SLIDES.length} SLIDES)`;
     el("up-next-title").textContent = "Q&A — http://ate.dev · Apache 2.0 Open Source";
-    el("up-next-cue").textContent = "Press ← to step back or click any Slide pill (1–31) below to jump to a diagram during Q&A.";
+    el("up-next-cue").textContent = `Press ← to step back or click any Slide pill (1–${SLIDES.length}) below to jump to a diagram during Q&A.`;
     handoffEl.classList.remove("visible");
   }
 
@@ -191,10 +191,10 @@ const initialTheme = (rawTheme === "dark" || rawTheme === "light") ? rawTheme : 
 
 if (VIEW_MODE === "speaker") {
   document.body.classList.add("speaker-mode");
-  document.title = "Presenter Console — KubeCon NA 2026 (31 Slides)";
+  document.title = `Presenter Console — KubeCon NA 2026 (${SLIDES.length} Slides)`;
 } else if (VIEW_MODE === "stage") {
   document.body.classList.add("present-mode");
-  document.title = "Audience Stage — KubeCon NA 2026 (31 Slides)";
+  document.title = `Audience Stage — KubeCon NA 2026 (${SLIDES.length} Slides)`;
 }
 
 const randBytes = new Uint8Array(6);
@@ -501,7 +501,7 @@ async function pollSpeakerNotesFile() {
 
 function serializeSpeakerNotesMarkdown() {
   const header = [
-    "# KubeCon NA 2026 — Speaker Notes (Complete Deck: 31 Slides)",
+    `# KubeCon NA 2026 — Speaker Notes (Complete Deck: ${SLIDES.length} Slides)`,
     "",
     "<!--",
     "HOW TO EDIT THIS FILE:",

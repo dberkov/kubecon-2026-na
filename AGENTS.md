@@ -3,7 +3,7 @@
 This repository holds the interactive web presentation for **Dmitry Berkovich (`dberkov`)** and **Tim Hockin (`thockin`)**:
 > **"Kubernetes Solutions for Agent-Shaped Problems"** (KubeCon North America 2026)
 
-The deck is structured as **one self-contained ES module per slide** (`slides/01-*.js` through `slides/31-*.js`) with **zero build step** required during local editing, so Dima and Tim can edit different slides in parallel using separate AI sessions (Jetski, Gemini CLI, Claude Code) without Git merge conflicts.
+The deck is structured as **one self-contained ES module per slide** (`slides/01-*.js` through `slides/28-*.js`) with **zero build step** required during local editing, so Dima and Tim can edit different slides in parallel using separate AI sessions (Jetski, Gemini CLI, Claude Code) without Git merge conflicts.
 
 ---
 

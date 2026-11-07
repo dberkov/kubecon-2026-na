@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate all 31 slide modules & security rules
+      - name: Validate all slide modules & security rules
         run: node ./scripts/validate.mjs
 
   deploy:

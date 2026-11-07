@@ -62,7 +62,7 @@ kubectl --context "kind-${CLUSTER_NAME}" -n kubecon-slides rollout status deploy
 cat <<BANNER
 
 ========================================================================
- KubeCon NA 2026 Deck (31 Slides) Live on kind!
+ KubeCon NA 2026 Deck (28 Slides) Live on kind!
 ========================================================================
  1. Laptop Screen (Presenter Console + Notes + Timer + Next Preview):
     http://127.0.0.1:8080/?mode=speaker
