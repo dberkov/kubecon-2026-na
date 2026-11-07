@@ -1,7 +1,7 @@
 export default {
   chapter: 3,
   short: "17. Goals",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "SUBSTRATE DESIGN GOALS",
   title: "Substrate Goals — Directly Resolving the Agent Trilemma",
   accent: "var(--s-blue)",

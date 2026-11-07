@@ -8,7 +8,7 @@ export default {
   headline: "3. Human-in-the-Loop: cold-start latency breaks interactive flow",
   body1: "Humans wait interactively on every turn (<200ms target).",
   body2: "5–15s Pod scheduling, image pull, and boot feel broken.",
-  notes: "Third, they tend to have humans in the loop, which makes them very sensitive to perceived latency.",
+  notes: "Third, they tend to have humans in the loop, which makes them very sensitive to perceived latency.\nSo: bursty, untrusted, and a human waiting on every turn. Tim, what happens when you run that on Kubernetes?",
   svg: `
   <!-- Card 1: Settled Completed Context -->
   <g id="tri-card-1" class="fade-group" style="opacity: 0.78">

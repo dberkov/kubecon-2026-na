@@ -2,7 +2,7 @@ export default {
   chapter: 0,
   isBookend: true,
   short: "1. Title",
-  speaker: "TIM & DIMA",
+  speaker: "TIM",
   notes: "Late last year and early this year, we both started looking at the same set of problems from slightly different angles — and came to the same conclusions. In the next 30 minutes, we'll look at why agents challenge standard Kubernetes and how Agent Substrate fits in.",
   takeaways: {"main": "Opening Title — Introduce Tim & Dima + framing question: 'Is Kubernetes Good For Agents?'", "sub1": "Both started from different angles (K8s core vs. Cloud agent infra) and converged on the same conclusion.", "sub2": "Next click transitions to Tim on Slide 2 (The Kubernetes Baseline)."},
   svg: `

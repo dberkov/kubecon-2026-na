@@ -1,7 +1,7 @@
 export default {
   chapter: 1,
   short: "10. Chat Loop",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "INTERACTIVE PING-PONG",
   title: "4. Multi-turn loop: bursts of work between human pauses",
   accent: "var(--s-green)",

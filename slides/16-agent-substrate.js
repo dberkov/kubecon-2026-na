@@ -3,8 +3,8 @@ export default {
   isBookend: true,
   short: "16. Agent Substrate",
   upNextTitle: "Agent Substrate Hero Reveal",
-  speaker: "DIMA & TIM",
-  notes: "And so this is the point where we decided we need to do better. We do not think people who just want to run agents should have to choose between a decent UX or an affordable bill, or between hitting hard limits or maintaining a proprietary orchestrator. That is why we built and open-sourced Agent Substrate.",
+  speaker: "TIM",
+  notes: "Exactly. And this is the point where we decided we need to do better. We do not think people who just want to run agents should have to choose between a decent UX or an affordable bill, or between hitting hard limits or maintaining a proprietary orchestrator. That is why we built and open-sourced Agent Substrate.",
   takeaways: {"main": "Agent Substrate Reveal — http://ate.dev (Apache 2.0 Open Source)", "sub1": "Teams shouldn't have to pick between bad UX, a 94%-idle bill, or reinventing K8s inside a Giant Pod.", "sub2": "Next click pivots into Design Goals, North-Star Targets, and Architecture (Slides 17–31)."},
   svg: `
   <g id="reveal-octo-wrap" class="fade-group">

@@ -8,7 +8,7 @@ export default {
   headline: "Actor is the main thing you run on Substrate",
   body1: "It covers agents, sandboxed environments, tools, and so on.",
   body2: "Think of one Actor as one agent session.",
-  notes: "Let's introduce five quick terms.\nFirst, Actor:\nThis is a sort of stand-in term to cover all the things that can run on Substrate\nThink agents, sandboxed environments, tools, etc.\nThis is the MAIN abstraction in Substrate\nYou can think of an Actor as a single agent session",
+  notes: "Thanks, Tim. First, Actor:\nThis is a sort of stand-in term to cover all the things that can run on Substrate\nThink agents, sandboxed environments, tools, etc.\nThis is the MAIN abstraction in Substrate\nYou can think of an Actor as a single agent session",
   svg: `
   <!-- Terminology progress -->
   <rect x="64" y="176" width="272" height="46" rx="23" style="fill: var(--s-purple)" />

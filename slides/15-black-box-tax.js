@@ -8,7 +8,7 @@ export default {
   headline: "DIY means reinventing Kubernetes inside a black box",
   body1: "A bespoke control plane schedules sandboxes and manages their lifecycle.",
   body2: "Everything is opaque to Kubernetes, and it's a big lift for every team, especially small companies.",
-  notes: "A bespoke control plane is responsible for scheduling agents into sandboxes\nThe manager manages the lifecycle of the sandboxes\nEverything is basically opaque\nYou end up reinventing large parts of kubernetes\nThis is pretty complex to build and manage\nEspecially for smaller companies\nLike startups",
+  notes: "A bespoke control plane is responsible for scheduling agents into sandboxes\nThe manager manages the lifecycle of the sandboxes\nEverything is basically opaque\nYou end up reinventing large parts of kubernetes\nThis is pretty complex to build and manage\nEspecially for smaller companies\nLike startups\nSo today you choose between a bad experience and building your own orchestrator. Tim?",
   svg: `
   <!-- Node (same geometry as slide 14's final frame) -->
   <rect x="64" y="176" width="1000" height="628" rx="22" style="fill: var(--s-blue-fill); stroke: var(--s-blue); stroke-width: 2.2" />

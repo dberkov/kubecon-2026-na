@@ -1,7 +1,7 @@
 export default {
   chapter: 1,
   short: "9. First Turn",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "ACTIVE EXECUTION",
   title: "3. Pod is ready: <prompt> in, <response> out",
   accent: "var(--s-green)",

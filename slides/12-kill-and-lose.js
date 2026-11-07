@@ -1,7 +1,7 @@
 export default {
   chapter: 1,
   short: "12. Kill & Lose",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "TIMEOUT & TEARDOWN",
   title: "6. Timeout expires: save state, terminate Pod, repeat!",
   accent: "var(--s-red)",

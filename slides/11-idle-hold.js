@@ -1,7 +1,7 @@
 export default {
   chapter: 1,
   short: "11. Idle Hold",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "THE 'JUST IN CASE' DILEMMA",
   title: "5. Waiting 'Just In Case' blocks resources",
   accent: "var(--s-amber)",

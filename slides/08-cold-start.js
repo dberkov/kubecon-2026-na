@@ -1,7 +1,7 @@
 export default {
   chapter: 1,
   short: "8. Cold Start",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "THE COLD-START LATENCY TAX",
   title: "Spin up a Kubernetes Pod",
   accent: "var(--s-blue)",

@@ -1,14 +1,14 @@
 export default {
   chapter: 1,
   short: "13. Cluster Scale",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "WHY APPROACH 1 BREAKS AT SCALE",
   title: "7. Multiply by thousands of agents: 94% idle waste + K8s limits",
   accent: "var(--s-red)",
   headline: "Three compounding walls: Poor Utilization · Long-Tail UX · K8s Scheduling & Pod Limits",
   body1: "1) Cluster capacity is locked up by idle Pods waiting for the next message (huge cost, <10% CPU used).",
   body2: "2) Traffic bursts overwhelm K8s pod scheduling throughput, and clusters top out at ~hundreds of thousands of Pods.",
-  notes: "This happens for every agent instance: poor utilization, long-tail UX latency, K8s scheduling throughput struggles on bursts, and a single Kubernetes cluster can only host a few hundred thousand pods.",
+  notes: "This happens for every agent instance: poor utilization, long-tail UX latency, K8s scheduling throughput struggles on bursts, and a single Kubernetes cluster can only host a few hundred thousand pods.\nThat's the simple approach. The teams who hit these walls first went a different way. Dima?",
   svg: `
   <g id="cluster-view" class="fade-group">
     <text x="64" y="162" font-size="16" font-weight="700" style="fill: var(--s-muted)">180 ACTIVE CHAT SESSIONS ACROSS 15 KUBERNETES NODES — ~94% OF PODS ARE JUST WAITING</text>

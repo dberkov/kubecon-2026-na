@@ -8,9 +8,7 @@ export default {
   headline: "1. Bursty & Idle: seconds of work, hours or days of sleep",
   body1: "Session state keeps the Pod reserved while idle.",
   body2: "Less than 2% CPU duty cycle across session lifetime.",
-  notes: `First, agentic apps tend to be very bursty.
-They wake up, run for a bit, and then go idle.
-They can be idle for minutes or hours or even days at a time.`,
+  notes: "Thanks, Tim. First, agentic apps tend to be very bursty.\nThey wake up, run for a bit, and then go idle.\nThey can be idle for minutes or hours or even days at a time.",
   svg: `
   <defs>
     <clipPath id="c1-wave-clip">

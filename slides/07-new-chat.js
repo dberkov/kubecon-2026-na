@@ -1,7 +1,7 @@
 export default {
   chapter: 1,
   short: "7. New Chat",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "STATE OF THE ART · APPROACH 1: ONE POD PER AGENT",
   title: "1. A user starts a new chat session",
   accent: "var(--s-amber)",

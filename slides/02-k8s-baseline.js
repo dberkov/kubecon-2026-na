@@ -8,7 +8,7 @@ export default {
   headline: "Kubernetes is the undisputed standard for services, AI training, inference, and RL",
   body1: "Stateless replicas, batch training, inference, and RL workloads amortize Pod overhead.",
   body2: "Naturally, teams deploy Stateful AI Agents on the same primitives — and three behaviors stand out.",
-  notes: "Kubernetes is the undisputed standard for deploying container workloads — including AI inference servers, training jobs, and reinforcement learning (RL). Naturally, teams building AI agents want to run them on the same infrastructure. But over the course of this year we saw people struggling: three characteristics immediately stand out.",
+  notes: "Kubernetes is the undisputed standard for deploying container workloads — including AI inference servers, training jobs, and reinforcement learning (RL). Naturally, teams building AI agents want to run them on the same infrastructure. But over the course of this year we saw people struggling: three characteristics immediately stand out.\nDima has spent a lot of time with these teams. Dima, what did you see?",
   svg: `
   <g id="base-left">
     <rect x="64" y="176" width="886" height="628" rx="22" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 1.8" />

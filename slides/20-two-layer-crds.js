@@ -1,14 +1,14 @@
 export default {
   chapter: 3,
   short: "20. 2-Layer CRDs",
-  speaker: "TIM / DIMA",
+  speaker: "TIM",
   kicker: "TWO-LAYER ARCHITECTURE",
   title: "Two layers of management",
   accent: "var(--s-green)",
   headline: "Infra Admins manage warm WorkerPool CRDs · App Developers schedule Actors via gRPC",
   body1: "Layer 1 (Bottom): WorkerPool & SandboxConfig CRDs -> ate-controller -> Warm Worker Pods & DaemonSets.",
   body2: "Layer 2 (Top): ateapi (gRPC) + Postgres + atenet/PEP schedule & wake Actors with zero etcd overhead.",
-  notes: "Agent Substrate is a two-layer system: Platform Admins use Kubernetes CRDs (WorkerPool, SandboxConfig) and ate-controller to provision warm Worker Pods. App Developers use Substrate's gRPC API backed by Postgres to run Actors inside those warm workers with zero etcd bottlenecks.",
+  notes: "Agent Substrate is a two-layer system: Platform Admins use Kubernetes CRDs (WorkerPool, SandboxConfig) and ate-controller to provision warm Worker Pods. App Developers use Substrate's gRPC API backed by Postgres to run Actors inside those warm workers with zero etcd bottlenecks.\nTo make the rest of this easier to follow, Dima will give us five quick terms.",
   svg: `
   <!-- =================================================================== -->
   <!-- LAYER 1 (BOTTOM FOUNDATION): KUBERNETES INFRASTRUCTURE (SLOW PATH)  -->

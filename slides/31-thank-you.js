@@ -3,7 +3,7 @@ export default {
   isBookend: true,
   short: "28. Thank You!",
   upNextTitle: "Thank You & Q&A (http://ate.dev)",
-  speaker: "TIM & DIMA",
+  speaker: "TIM",
   notes: "Thank you! Agent Substrate is 100% Apache 2.0 open source at http://ate.dev — we would love for you to try it, break it, and build with us. Happy to take your questions!",
   takeaways: {"main": "Closing & Q&A — http://ate.dev (100% Apache 2.0 Open Source)", "sub1": "Security (gVisor/uVM + PEP)  ·  Density (Off-CPU Snapshots)  ·  Speed (~100ms Wakeups).", "sub2": "Use Quick Jump pills below to pull up any architecture diagram immediately during Q&A."},
   svg: `
