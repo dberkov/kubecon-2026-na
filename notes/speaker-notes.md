@@ -12,7 +12,7 @@ HOW TO EDIT THIS FILE:
 Late last year and early this year, we both started looking at the same set of problems from slightly different angles — and came to the same conclusions. In the next 30 minutes, we'll look at why agents challenge standard Kubernetes and how Agent Substrate fits in.
 
 ## Slide 2 | 2. K8s Baseline | Speaker: TIM
-Kubernetes is the undisputed standard for deploying container workloads — including AI inference servers and training jobs. Naturally, teams building AI agents want to run them on the same infrastructure. But over the course of this year we saw people struggling: three characteristics immediately stand out.
+Kubernetes is the undisputed standard for deploying container workloads — including AI inference servers, training jobs, and reinforcement learning (RL). Naturally, teams building AI agents want to run them on the same infrastructure. But over the course of this year we saw people struggling: three characteristics immediately stand out.
 
 ## Slide 3 | 3. Bursty & Idle | Speaker: DIMA
 First, agentic apps tend to be very bursty. 

@@ -3,38 +3,43 @@ export default {
   short: "8. Cold Start",
   speaker: "TIM / DIMA",
   kicker: "THE COLD-START LATENCY TAX",
-  title: "2. Spin up a dedicated K8s Pod — and wait O(seconds)",
+  title: "Spin up a Kubernetes Pod",
   accent: "var(--s-blue)",
   headline: "Creating a Pod per session puts the K8s control plane on the human critical path",
-  body1: "apiserver -> etcd -> scheduler -> kubelet -> image/init -> agent boot takes a few seconds or much longer.",
+  body1: "apiserver -> admission-control -> scheduler -> apiserver -> kubelet -> image/init -> agent boot takes a few seconds or much longer.",
   body2: "Great for a long-lived web server — painful when a human is waiting on every new session.",
   notes: "That requires instantiating an agent in its own sandbox, so we spin up a Pod. Depending on what the agent does at startup, it could be a few seconds or much longer. So we wait.",
   svg: `
   <g id="single-view" class="fade-group">
     <g id="k8s-cp" class="fade-group">
-      <rect x="380" y="152" width="640" height="86" rx="14" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 1.5; stroke-dasharray: 6 5" />
-      <text x="400" y="176" font-size="14" font-weight="700" style="fill: var(--s-muted)">KUBERNETES CONTROL PLANE (HOT PATH PER POD)</text>
+      <rect x="280" y="152" width="776" height="86" rx="14" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 1.5; stroke-dasharray: 6 5" />
+      <text x="298" y="176" font-size="14" font-weight="700" style="fill: var(--s-muted)">KUBERNETES CONTROL PLANE (HOT PATH PER POD)</text>
       <g id="cp-0">
-        <rect id="cp-box-0" x="400" y="188" width="132" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
-        <text x="466" y="211" font-size="14" font-weight="600" text-anchor="middle" class="mono">apiserver</text>
+        <rect id="cp-box-0" x="298" y="188" width="116" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
+        <text x="356" y="211" font-size="13.5" font-weight="600" text-anchor="middle" class="mono">apiserver</text>
       </g>
-      <line x1="534" y1="206" x2="554" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-muted)" />
+      <line x1="416" y1="206" x2="434" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-muted)" />
       <g id="cp-1">
-        <rect id="cp-box-1" x="558" y="188" width="110" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
-        <text x="613" y="211" font-size="14" font-weight="600" text-anchor="middle" class="mono">etcd</text>
+        <rect id="cp-box-1" x="438" y="188" width="168" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
+        <text x="522" y="211" font-size="13.5" font-weight="600" text-anchor="middle" class="mono">admission-control</text>
       </g>
-      <line x1="670" y1="206" x2="690" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-muted)" />
+      <line x1="608" y1="206" x2="626" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-muted)" />
       <g id="cp-2">
-        <rect id="cp-box-2" x="694" y="188" width="132" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
-        <text x="760" y="211" font-size="14" font-weight="600" text-anchor="middle" class="mono">scheduler</text>
+        <rect id="cp-box-2" x="630" y="188" width="116" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
+        <text x="688" y="211" font-size="13.5" font-weight="600" text-anchor="middle" class="mono">scheduler</text>
       </g>
-      <line x1="828" y1="206" x2="848" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-muted)" />
+      <line x1="748" y1="206" x2="766" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-muted)" />
       <g id="cp-3">
-        <rect id="cp-box-3" x="852" y="188" width="146" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
-        <text x="925" y="211" font-size="14" font-weight="600" text-anchor="middle" class="mono">kubelet pull</text>
+        <rect id="cp-box-3" x="770" y="188" width="116" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
+        <text x="828" y="211" font-size="13.5" font-weight="600" text-anchor="middle" class="mono">apiserver</text>
       </g>
-      <path d="M 466 340 L 466 242" fill="none" stroke="#9334e6" stroke-width="2.5" stroke-dasharray="5 5" marker-end="url(#arrow-purple)" />
-      <path d="M 925 240 L 925 292" fill="none" stroke="#1a73e8" stroke-width="2.5" stroke-dasharray="5 5" marker-end="url(#arrow-blue)" />
+      <line x1="888" y1="206" x2="906" y2="206" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-muted)" />
+      <g id="cp-4">
+        <rect id="cp-box-4" x="910" y="188" width="126" height="36" rx="8" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.5" />
+        <text x="973" y="211" font-size="13.5" font-weight="600" text-anchor="middle" class="mono">kubelet</text>
+      </g>
+      <path d="M 400 340 L 400 242" fill="none" stroke="#9334e6" stroke-width="2.5" stroke-dasharray="5 5" marker-end="url(#arrow-purple)" />
+      <path d="M 973 240 L 973 292" fill="none" stroke="#1a73e8" stroke-width="2.5" stroke-dasharray="5 5" marker-end="url(#arrow-blue)" />
     </g>
     <g id="user-node">
       <rect x="64" y="340" width="164" height="164" rx="22" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.5" />
@@ -125,8 +130,34 @@ export default {
     const progFill = ctx.el("pod-prog-fill");
     progFill.style.fill = "var(--s-amber)";
 
+    const cpBoxes = [
+      ctx.el("cp-box-0"),
+      ctx.el("cp-box-1"),
+      ctx.el("cp-box-2"),
+      ctx.el("cp-box-3"),
+      ctx.el("cp-box-4")
+    ];
+    const highlightStep = (activeIdx) => {
+      cpBoxes.forEach((b, i) => {
+        if (!b) return;
+        if (i === activeIdx) {
+          b.style.fill = "var(--s-blue-fill)";
+          b.style.stroke = "var(--s-blue)";
+          b.style.strokeWidth = "2.2";
+        } else if (i < activeIdx) {
+          b.style.fill = "var(--s-green-fill)";
+          b.style.stroke = "var(--s-green)";
+          b.style.strokeWidth = "1.6";
+        } else {
+          b.style.fill = "var(--s-surface-2)";
+          b.style.stroke = "var(--s-border)";
+          b.style.strokeWidth = "1.5";
+        }
+      });
+    };
+
     let elapsed = 0;
-    ctx.highlightCpBox(0);
+    highlightStep(0);
     ctx.sendPacket("Create Pod", "var(--s-blue)", "#ffffff", 596, 382, 660, 382, 140);
     ctx.later(1150, () => ctx.hidePacket());
 
@@ -135,7 +166,7 @@ export default {
       const pct = elapsed / 4.8;
       progFill.setAttribute("width", String(Math.round(268 * pct)));
       ctx.el("pod-timer-txt").textContent = `Cold start: ${elapsed.toFixed(1)}s (waiting...)`;
-      ctx.highlightCpBox(Math.min(3, Math.floor(pct * 4)));
+      highlightStep(Math.min(4, Math.floor(pct * 5)));
       if (elapsed >= 4.8) {
         elapsed = 0;
         ctx.sendPacket("Create Pod", "var(--s-blue)", "#ffffff", 596, 382, 660, 382, 140);

@@ -3,7 +3,7 @@ export default {
   short: "19. Foundations",
   speaker: "TIM",
   kicker: "AGENT SUBSTRATE: FOUNDATIONS",
-  title: "Built to Work ON and WITH Kubernetes — Pluggable by Design",
+  title: "Agent Substrate + Kubernetes",
   accent: "var(--s-blue)",
   headline: "We take the best parts of Kubernetes — while keeping K8s off the per-turn hot path",
   body1: "Workers are K8s Pods (drain-aware), and the Control Plane & PEP run as standard K8s workloads.",
@@ -36,7 +36,7 @@ export default {
   </g>
   <g id="f24-row-4" class="fade-group">
     <rect x="100" y="564" width="876" height="72" rx="14" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2" />
-    <text x="538" y="608" text-anchor="middle" font-size="20" font-weight="700" style="fill: var(--s-amber-dark)">Golden Rule: Never put Kubernetes etcd on the per-turn agent hot path</text>
+    <text x="538" y="608" text-anchor="middle" font-size="20" font-weight="700" style="fill: var(--s-amber-dark)">Golden Rule: Never put Kubernetes on the hot path</text>
   </g>
   <rect x="1044" y="156" width="492" height="508" rx="20" style="fill: var(--s-blue-fill); stroke: var(--s-blue); stroke-width: 2.2" />
   <g class="float-slow">
