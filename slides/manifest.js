@@ -23,9 +23,9 @@ import s22 from "./22-term-template.js";
 import s23 from "./23-term-worker.js";
 import s24 from "./24-term-atelet.js";
 import s25 from "./25-term-atenet.js";
-import s27 from "./27-cluster-multiplex.js";
-import s29 from "./29-snapshots-v2.js";
-import s31 from "./31-thank-you.js";
+import s26 from "./26-cluster-multiplex.js";
+import s27 from "./27-snapshots-v2.js";
+import s28 from "./28-thank-you.js";
 
 export const SLIDES = [
   s01,
@@ -53,7 +53,7 @@ export const SLIDES = [
   s23,
   s24,
   s25,
+  s26,
   s27,
-  s29,
-  s31,
+  s28,
 ];

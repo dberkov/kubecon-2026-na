@@ -47,7 +47,7 @@ export default {
 };
 ```
 
-Bookend slides (`01-title.js`, `16-agent-substrate.js`, `31-thank-you.js`) set `isBookend: true` (hiding the shared top header and bottom callout banner) and provide `takeaways: { main, sub1, sub2 }` for the Presenter Console.
+Bookend slides (`01-title.js`, `16-agent-substrate.js`, `28-thank-you.js`) set `isBookend: true` (hiding the shared top header and bottom callout banner) and provide `takeaways: { main, sub1, sub2 }` for the Presenter Console.
 
 ---
 

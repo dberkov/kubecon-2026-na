@@ -37,7 +37,7 @@ Each of the **31 slides** is an independent ES module in [`slides/`](./slides) o
 │   ├── manifest.js             # Ordered list of all 31 slides
 │   ├── 01-title.js             # Chapters I–VI: 1 self-contained file per slide!
 │   ├── ...
-│   └── 31-thank-you.js
+│   └── 28-thank-you.js
 ├── notes/
 │   └── speaker-notes.md        # Live-polled Markdown speaker script (~2.5s auto-reload)
 ├── kind-deploy/                # Offline-safe Kubernetes (kind) laptop deployment for live stage
