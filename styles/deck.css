@@ -663,7 +663,7 @@ body.speaker-mode .app-shell {
 
 body.speaker-mode .workspace-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
   gap: 14px;
   flex: 1;
   min-height: 0;
@@ -754,7 +754,7 @@ body.speaker-mode .slide-ref-tag {
   color: #cbd5e1;
 }
 body.speaker-mode .notes-text {
-  font-size: var(--spk-font-size, 21px);
+  font-size: var(--spk-font-size, 26px);
   line-height: 1.58;
   color: #ffffff;
   font-weight: 500;

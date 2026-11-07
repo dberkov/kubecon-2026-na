@@ -319,9 +319,9 @@ el("spk-timer-reset").addEventListener("click", () => {
 });
 
 // Adjustable Speaker Notes Font Size (A- / A+)
-let spkFontPx = 21;
+let spkFontPx = 26;
 function applySpkFont(px) {
-  spkFontPx = Math.max(15, Math.min(32, px));
+  spkFontPx = Math.max(15, Math.min(40, px));
   document.documentElement.style.setProperty("--spk-font-size", spkFontPx + "px");
 }
 el("btn-font-dec").addEventListener("click", () => applySpkFont(spkFontPx - 2));
