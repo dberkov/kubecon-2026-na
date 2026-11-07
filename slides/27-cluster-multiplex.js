@@ -1,143 +1,370 @@
 export default {
   chapter: 5,
-  short: "27. Cluster Multiplex",
+  short: "27. Millions Asleep, Few Awake",
   speaker: "DIMA",
-  kicker: "GOAL: DENSITY · CLUSTER VIEW",
-  title: "Goal: Density — Multiplexing Actors Across the Cluster",
-  accent: "var(--s-purple)",
-  headline: "Billions of Suspended Actors (0 CPU / 0 RAM) dynamically time-slice compact Warm Workers",
-  body1: "Off-CPU (Left): Millions or billions of stateful sessions sit in storage at zero compute cost.",
-  body2: "On-CPU (Right): Active Actors Resume into free Worker slots and Suspend back out when idle.",
-  notes: "Stepping back to the cluster view: this lets you register millions or billions of stateful actors off-CPU in Postgres and durable storage at zero compute cost, while running a much smaller pool of warm Worker Pods across your Kubernetes nodes. As actors wake up and go idle, they dynamically hydrate onto warm workers and swap back out to storage.",
+  kicker: "GOAL: DENSITY",
+  title: "Millions asleep, few awake",
+  accent: "var(--s-green)",
+  headline: "Most actors are asleep in object storage; only active ones take a worker slot",
+  body1: "A suspended actor is just a snapshot. It uses no CPU and no memory.",
+  body2: "Actors resume into free slots and get suspended back out, so a few workers serve millions of actors.",
+  notes: "Let's go back to our first goal: Density\nOn the previous slides we followed one actor on one node: resume, run, suspend\nNow let's zoom out to the whole cluster\nMost agents are idle most of the time, so most actors are suspended\nA suspended actor is just a snapshot in object storage. It uses no CPU and no memory\nOnly the active actors take a slot on a worker\nWhen an actor wakes up, it resumes into a free slot. When it goes idle, it's suspended back to storage\nSo a small pool of workers can serve millions of actors",
   svg: `
-  <rect x="68" y="162" width="596" height="506" rx="54" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.6" />
-  <text x="366" y="224" text-anchor="middle" font-size="29" font-weight="700" style="fill: var(--s-purple)">Suspended Actors (Off-CPU)</text>
-  <text x="366" y="258" text-anchor="middle" font-size="18.5" style="fill: var(--s-muted)">0 CPU / 0 RAM  •  Billions in Storage</text>
-  <g id="s34-offcpu-grid" />
-  <rect x="696" y="302" width="188" height="62" rx="14" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.2" />
-  <text x="790" y="341" text-anchor="middle" font-size="22" font-weight="700">Resume</text>
-  <line id="s34-arr-resume" x1="690" y1="388" x2="886" y2="388" stroke="#1e8e3e" stroke-width="4.5" marker-end="url(#arr-green)" />
-  <line id="s34-arr-suspend" x1="886" y1="496" x2="690" y2="496" stroke="#9334e6" stroke-width="4.5" marker-end="url(#arr-purple)" />
-  <rect x="696" y="518" width="188" height="62" rx="14" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.2" />
-  <text x="790" y="557" text-anchor="middle" font-size="22" font-weight="700">Suspend</text>
-  <rect x="912" y="162" width="620" height="506" rx="54" style="fill: var(--s-blue-fill); stroke: var(--s-blue); stroke-width: 2.6" />
-  <text x="1222" y="224" text-anchor="middle" font-size="29" font-weight="700" style="fill: var(--s-blue)">Warm Workers (On-CPU)</text>
-  <text x="1222" y="258" text-anchor="middle" font-size="18.5" style="fill: var(--s-muted)">Each Worker runs multiple Actors</text>
-  <rect x="952" y="286" width="540" height="172" rx="8" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2.2" />
-  <text x="1222" y="324" text-anchor="middle" font-size="22" font-weight="700">Worker 1</text>
-  <rect x="974" y="344" width="154" height="96" rx="6" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-  <text x="1051" y="400" text-anchor="middle" font-size="21" font-weight="700">Actor 7</text>
-  <rect x="1145" y="344" width="154" height="96" rx="6" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-  <text x="1222" y="400" text-anchor="middle" font-size="21" font-weight="700">Actor 12</text>
-  <rect x="1316" y="344" width="154" height="96" rx="6" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-  <text x="1393" y="400" text-anchor="middle" font-size="21" font-weight="700">Actor 35</text>
-  <rect x="952" y="476" width="540" height="172" rx="8" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2.2" />
-  <text x="1222" y="514" text-anchor="middle" font-size="22" font-weight="700">Worker 2</text>
-  <rect id="s34-w2-slot1" class="smooth-box" x="974" y="534" width="154" height="96" rx="6" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-  <text id="s34-w2-txt1" x="1051" y="590" text-anchor="middle" font-size="21" font-weight="700">Actor 42</text>
-  <rect x="1145" y="534" width="154" height="96" rx="6" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-  <text x="1222" y="590" text-anchor="middle" font-size="21" font-weight="700">Actor 89</text>
-  <rect id="s34-w2-slot3" class="smooth-box" x="1316" y="534" width="154" height="96" rx="6" style="fill: var(--s-slot-fill); stroke: var(--s-muted); stroke-width: 2.2; stroke-dasharray: 8 5" />
-  <text id="s34-w2-txt3" x="1393" y="590" text-anchor="middle" font-size="21" font-weight="700" style="fill: var(--s-muted)">Free slot</text>
-  <g id="s34-pkt" class="mover" style="opacity: 0; transform: translate(500px, 388px)">
-    <rect id="s34-pkt-bg" x="-72" y="-20" width="144" height="40" rx="20" style="fill: var(--s-green); stroke: #ffffff; stroke-width: 2" />
-    <text id="s34-pkt-txt" x="0" y="6" text-anchor="middle" font-size="15" font-weight="700" style="fill: #ffffff">Actor 3 →</text>
+  <!-- Off-CPU pool: object storage full of sleeping actors -->
+  <g id="pool" class="fade-group" style="opacity: 0">
+    <path d="M 64 236 V 756 A 228 24 0 0 0 520 756 V 236" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.4" />
+    <ellipse cx="292" cy="236" rx="228" ry="24" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.4" />
+    <rect x="98" y="286" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="122" cy="304" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="112" y="314" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="166" y="286" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="190" cy="304" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="180" y="314" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="234" y="286" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="258" cy="304" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="248" y="314" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="302" y="286" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="326" cy="304" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="316" y="314" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="370" y="286" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="394" cy="304" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="384" y="314" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="438" y="286" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="462" cy="304" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="452" y="314" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="98" y="354" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="122" cy="372" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="112" y="382" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="166" y="354" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="190" cy="372" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="180" y="382" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="234" y="354" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="258" cy="372" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="248" y="382" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="302" y="354" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="326" cy="372" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="316" y="382" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="370" y="354" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="394" cy="372" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="384" y="382" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="438" y="354" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="462" cy="372" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="452" y="382" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="98" y="422" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="122" cy="440" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="112" y="450" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="166" y="422" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="190" cy="440" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="180" y="450" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="234" y="422" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="258" cy="440" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="248" y="450" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="302" y="422" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="326" cy="440" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="316" y="450" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="370" y="422" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="394" cy="440" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="384" y="450" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="438" y="422" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="462" cy="440" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="452" y="450" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="98" y="490" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="122" cy="508" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="112" y="518" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="166" y="490" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="190" cy="508" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="180" y="518" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="234" y="490" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="258" cy="508" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="248" y="518" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="302" y="490" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="326" cy="508" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="316" y="518" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="370" y="490" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="394" cy="508" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="384" y="518" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="438" y="490" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="462" cy="508" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="452" y="518" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="98" y="558" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="122" cy="576" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="112" y="586" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="166" y="558" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="190" cy="576" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="180" y="586" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="234" y="558" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="258" cy="576" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="248" y="586" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="302" y="558" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="326" cy="576" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="316" y="586" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="370" y="558" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="394" cy="576" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="384" y="586" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="438" y="558" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="462" cy="576" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="452" y="586" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="98" y="626" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="122" cy="644" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="112" y="654" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="166" y="626" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="190" cy="644" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="180" y="654" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="234" y="626" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="258" cy="644" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="248" y="654" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="302" y="626" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="326" cy="644" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="316" y="654" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="370" y="626" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="394" cy="644" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="384" y="654" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="438" y="626" width="48" height="48" rx="9" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 5 4; opacity: 0.75" />
+    <circle cx="462" cy="644" r="6" style="fill: var(--s-purple); opacity: 0.45" />
+    <rect x="452" y="654" width="20" height="10" rx="5" style="fill: var(--s-purple); opacity: 0.45" />
+    <text x="292" y="718" text-anchor="middle" font-size="24" font-weight="800" style="fill: var(--s-amber-dark)">millions asleep</text>
+    <text x="292" y="746" text-anchor="middle" font-size="16" class="mono" style="fill: var(--s-muted)">0 CPU · 0 RAM</text>
+  </g>
+
+  <!-- Resume / suspend arrows -->
+  <g id="arrows" class="fade-group" style="opacity: 0">
+    <text x="560" y="362" text-anchor="middle" font-size="14" font-weight="800" style="fill: var(--s-blue)">resume</text>
+    <line x1="530" y1="380" x2="578" y2="380" style="stroke: var(--s-blue); stroke-width: 4" stroke-linecap="round" />
+    <polygon points="576,370 592,380 576,390" style="fill: var(--s-blue)" />
+    <text x="560" y="602" text-anchor="middle" font-size="14" font-weight="800" style="fill: var(--s-red)">suspend</text>
+    <line x1="590" y1="620" x2="542" y2="620" style="stroke: var(--s-red); stroke-width: 4" stroke-linecap="round" />
+    <polygon points="544,610 528,620 544,630" style="fill: var(--s-red)" />
+  </g>
+
+  <!-- Kubernetes cluster -->
+  <g id="cluster" class="fade-group" style="opacity: 0">
+    <rect x="600" y="200" width="936" height="580" rx="22" style="fill: var(--s-surface); stroke: var(--s-blue); stroke-width: 1.6; stroke-dasharray: 9 7" />
+    <text x="628" y="236" font-size="18" font-weight="800" style="fill: var(--s-blue-dark)">Kubernetes cluster</text>
+    <text x="1508" y="236" text-anchor="end" font-size="16" font-weight="700" style="fill: var(--s-muted)">only active actors take a slot</text>
+  </g>
+  <g id="node-0">
+    <rect x="624" y="256" width="888" height="160" rx="16" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.8" />
+    <rect x="640" y="270" width="40" height="132" rx="10" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 2" />
+    <text x="660" y="336" text-anchor="middle" font-size="15" font-weight="800" class="mono" transform="rotate(-90 660 336)" style="fill: var(--s-green-dark)">atelet</text>
+    <rect x="696" y="270" width="392" height="132" rx="12" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2" />
+    <rect x="712" y="302" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-0-0-0" class="fade-group" style="opacity: 0">
+      <rect x="712" y="302" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="764" cy="334" r="12" style="fill: var(--s-purple)" />
+      <rect x="746" y="350" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="840" y="302" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-0-0-1" class="fade-group" style="opacity: 0">
+      <rect x="840" y="302" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="892" cy="334" r="12" style="fill: var(--s-purple)" />
+      <rect x="874" y="350" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="968" y="302" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-0-0-2" class="fade-group" style="opacity: 0">
+      <rect x="968" y="302" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1020" cy="334" r="12" style="fill: var(--s-purple)" />
+      <rect x="1002" y="350" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1104" y="270" width="392" height="132" rx="12" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2" />
+    <rect x="1120" y="302" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-0-1-0" class="fade-group" style="opacity: 0">
+      <rect x="1120" y="302" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1172" cy="334" r="12" style="fill: var(--s-purple)" />
+      <rect x="1154" y="350" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1248" y="302" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-0-1-1" class="fade-group" style="opacity: 0">
+      <rect x="1248" y="302" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1300" cy="334" r="12" style="fill: var(--s-purple)" />
+      <rect x="1282" y="350" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1376" y="302" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-0-1-2" class="fade-group" style="opacity: 0">
+      <rect x="1376" y="302" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1428" cy="334" r="12" style="fill: var(--s-purple)" />
+      <rect x="1410" y="350" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+  </g>
+  <g id="node-1" class="fade-group" style="opacity: 0">
+    <rect x="624" y="430" width="888" height="160" rx="16" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.8" />
+    <rect x="640" y="444" width="40" height="132" rx="10" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 2" />
+    <text x="660" y="510" text-anchor="middle" font-size="15" font-weight="800" class="mono" transform="rotate(-90 660 510)" style="fill: var(--s-green-dark)">atelet</text>
+    <rect x="696" y="444" width="392" height="132" rx="12" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2" />
+    <rect x="712" y="476" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-1-0-0" class="fade-group" style="opacity: 0">
+      <rect x="712" y="476" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="764" cy="508" r="12" style="fill: var(--s-purple)" />
+      <rect x="746" y="524" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="840" y="476" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-1-0-1" class="fade-group" style="opacity: 0">
+      <rect x="840" y="476" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="892" cy="508" r="12" style="fill: var(--s-purple)" />
+      <rect x="874" y="524" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="968" y="476" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-1-0-2" class="fade-group" style="opacity: 0">
+      <rect x="968" y="476" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1020" cy="508" r="12" style="fill: var(--s-purple)" />
+      <rect x="1002" y="524" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1104" y="444" width="392" height="132" rx="12" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2" />
+    <rect x="1120" y="476" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-1-1-0" class="fade-group" style="opacity: 0">
+      <rect x="1120" y="476" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1172" cy="508" r="12" style="fill: var(--s-purple)" />
+      <rect x="1154" y="524" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1248" y="476" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-1-1-1" class="fade-group" style="opacity: 0">
+      <rect x="1248" y="476" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1300" cy="508" r="12" style="fill: var(--s-purple)" />
+      <rect x="1282" y="524" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1376" y="476" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-1-1-2" class="fade-group" style="opacity: 0">
+      <rect x="1376" y="476" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1428" cy="508" r="12" style="fill: var(--s-purple)" />
+      <rect x="1410" y="524" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+  </g>
+  <g id="node-2" class="fade-group" style="opacity: 0">
+    <rect x="624" y="604" width="888" height="160" rx="16" style="fill: var(--s-surface-2); stroke: var(--s-border); stroke-width: 1.8" />
+    <rect x="640" y="618" width="40" height="132" rx="10" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 2" />
+    <text x="660" y="684" text-anchor="middle" font-size="15" font-weight="800" class="mono" transform="rotate(-90 660 684)" style="fill: var(--s-green-dark)">atelet</text>
+    <rect x="696" y="618" width="392" height="132" rx="12" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2" />
+    <rect x="712" y="650" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-2-0-0" class="fade-group" style="opacity: 0">
+      <rect x="712" y="650" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="764" cy="682" r="12" style="fill: var(--s-purple)" />
+      <rect x="746" y="698" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="840" y="650" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-2-0-1" class="fade-group" style="opacity: 0">
+      <rect x="840" y="650" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="892" cy="682" r="12" style="fill: var(--s-purple)" />
+      <rect x="874" y="698" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="968" y="650" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-2-0-2" class="fade-group" style="opacity: 0">
+      <rect x="968" y="650" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1020" cy="682" r="12" style="fill: var(--s-purple)" />
+      <rect x="1002" y="698" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1104" y="618" width="392" height="132" rx="12" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2" />
+    <rect x="1120" y="650" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-2-1-0" class="fade-group" style="opacity: 0">
+      <rect x="1120" y="650" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1172" cy="682" r="12" style="fill: var(--s-purple)" />
+      <rect x="1154" y="698" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1248" y="650" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-2-1-1" class="fade-group" style="opacity: 0">
+      <rect x="1248" y="650" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1300" cy="682" r="12" style="fill: var(--s-purple)" />
+      <rect x="1282" y="698" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+    <rect x="1376" y="650" width="104" height="88" rx="10" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.4; stroke-dasharray: 6 4; opacity: 0.55" />
+    <g id="s-2-1-2" class="fade-group" style="opacity: 0">
+      <rect x="1376" y="650" width="104" height="88" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
+      <circle cx="1428" cy="682" r="12" style="fill: var(--s-purple)" />
+      <rect x="1410" y="698" width="36" height="17" rx="8.5" style="fill: var(--s-purple)" />
+    </g>
+  </g>
+
+  <g id="fly" class="mover" style="opacity: 0; transform: translate(0px, 0px)">
+    <rect x="-28" y="-28" width="56" height="56" rx="10" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.4" />
+    <circle cx="0" cy="-8" r="9" style="fill: var(--s-purple)" />
+    <rect x="-13" y="5" width="26" height="12" rx="6" style="fill: var(--s-purple)" />
   </g>
   `,
   animate: (ctx) => {
-    const offCpuGrid = ctx.el("s34-offcpu-grid");
-    const offCpuCyls = [];
-    const offLabels = ["Actor 1", "Actor 2", "Actor 3", "Actor 4", "Actor 5", "Actor N..."];
-    for (let i = 0; i < 6; i++) {
-      const col = i % 2;
-      const row = Math.floor(i / 2);
-      const cx = 228 + col * 276;
-      const cy = 328 + row * 116;
-      const w = 236, h = 76;
-      const x0 = cx - w / 2, x1 = cx + w / 2;
-      const y0 = cy - h / 2 + 8, y1 = cy + h / 2;
+    ctx.el("bottom-callout").classList.add("is-hidden");
 
-      const g = ctx.svgEl("g");
-      const body = ctx.svgEl("path", {
-        d: `M ${x0} ${y0} L ${x0} ${y1} C ${x0} ${y1 + 14}, ${x1} ${y1 + 14}, ${x1} ${y1} L ${x1} ${y0} Z`,
-        class: "smooth-box",
-        style: "fill: var(--s-card); stroke: var(--s-purple); stroke-width: 2.2"
-      });
-      const cap = ctx.svgEl("ellipse", {
-        cx, cy: y0, rx: w / 2, ry: 10,
-        class: "smooth-box",
-        style: "fill: var(--s-card); stroke: var(--s-purple); stroke-width: 2.2"
-      });
-      const txt = ctx.svgEl("text", {
-        x: cx, y: cy + 16, "text-anchor": "middle", "font-size": 22, "font-weight": 700
-      }, offLabels[i]);
-
-      g.appendChild(body);
-      g.appendChild(cap);
-      g.appendChild(txt);
-      offCpuGrid.appendChild(g);
-      offCpuCyls.push({ body, cap, txt });
-    }
-
-    const w2s1 = ctx.el("s34-w2-slot1");
-    const w2t1 = ctx.el("s34-w2-txt1");
-    const w2s3 = ctx.el("s34-w2-slot3");
-    const w2t3 = ctx.el("s34-w2-txt3");
-
-    const resetCyls = (hiIdx) => {
-      offCpuCyls.forEach((c, i) => {
-        const hi = i === hiIdx;
-        c.body.style.fill = hi ? "var(--s-green-fill)" : "var(--s-card)";
-        c.cap.style.fill = hi ? "var(--s-green-fill)" : "var(--s-card)";
-        c.body.style.stroke = hi ? "var(--s-green)" : "var(--s-purple)";
-        c.cap.style.stroke = hi ? "var(--s-green)" : "var(--s-purple)";
-      });
+    const pop = (node, from) => {
+      node.style.transformBox = "fill-box";
+      node.style.transformOrigin = "center";
+      node.style.transition = "none";
+      node.style.opacity = "0";
+      node.style.transform = from;
+      node.getBoundingClientRect();
+      node.style.transition = "";
+      node.style.opacity = "1";
+      node.style.transform = "none";
     };
 
-    const runS34 = () => {
-      resetCyls(-1);
-      w2s1.style.fill = "var(--s-purple-fill)";
-      w2s1.style.stroke = "var(--s-purple)";
-      w2s1.style.strokeDasharray = "none";
-      w2t1.textContent = "Actor 42";
-      w2t1.style.fill = "var(--s-text)";
-
-      w2s3.style.fill = "var(--s-slot-fill)";
-      w2s3.style.stroke = "var(--s-muted)";
-      w2s3.style.strokeDasharray = "8 5";
-      w2t3.textContent = "Free slot";
-      w2t3.style.fill = "var(--s-muted)";
-      ctx.el("s34-pkt").style.opacity = "0";
-
-      ctx.later(550, () => {
-        resetCyls(2);
-        ctx.movePkt("s34-pkt", "s34-pkt-bg", "s34-pkt-txt", "Resume Actor 3", "var(--s-green)", "#ffffff", 560, 388, 1340, 582, 168);
-      });
-
-      ctx.later(1300, () => {
-        resetCyls(-1);
-        w2s3.style.fill = "var(--s-purple-fill)";
-        w2s3.style.stroke = "var(--s-purple)";
-        w2s3.style.strokeDasharray = "none";
-        w2t3.textContent = "Actor 3";
-        w2t3.style.fill = "var(--s-text)";
-        ctx.el("s34-pkt").style.opacity = "0";
-      });
-
-      ctx.later(2250, () => {
-        w2s1.style.fill = "var(--s-slot-fill)";
-        w2s1.style.stroke = "var(--s-muted)";
-        w2s1.style.strokeDasharray = "8 5";
-        w2t1.textContent = "Free slot";
-        w2t1.style.fill = "var(--s-muted)";
-        ctx.movePkt("s34-pkt", "s34-pkt-bg", "s34-pkt-txt", "<- Suspend #42", "var(--s-purple)", "#ffffff", 1020, 534, 560, 496, 168);
-      });
-
-      ctx.later(3050, () => {
-        ctx.el("s34-pkt").style.opacity = "0";
-      });
+    // Geometry shared with the generated markup
+    const NODE_Y = [256, 430, 604];
+    const WORKER_X = [696, 1104];
+    const slotCenter = (n, w, k) => [WORKER_X[w] + 16 + k * 128 + 52, NODE_Y[n] + 46 + 44];
+    const poolCenter = () => {
+      const c = Math.floor(Math.random() * 6);
+      const r = Math.floor(Math.random() * 6);
+      return [98 + c * 68 + 24, 286 + r * 68 + 24];
     };
-    runS34();
-    ctx.every(4000, runS34);
+
+    // Start where slide 24 left off: one node, close up
+    const filled = new Set(["0-0-0", "0-0-1", "0-1-0", "1-0-0", "1-1-1", "1-1-2", "2-0-2", "2-1-0"]);
+    filled.forEach((key) => { ctx.el(`s-${key}`).style.opacity = "1"; });
+    const node0 = ctx.el("node-0");
+    const S0 = 1.6;
+    const zoom = (e) => {
+      const s = S0 - (S0 - 1) * e;
+      const tx = (800 - 1068 * S0) * (1 - e);
+      const ty = (490 - 336 * S0) * (1 - e);
+      node0.setAttribute("transform", `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${s.toFixed(3)})`);
+    };
+    zoom(0);
+
+    // Pull the camera back to the whole cluster
+    ctx.later(900, () => ctx.animateProgress(1400, (t) => zoom(ctx.easeOutCubic(t))));
+    ctx.later(2300, () => { ctx.el("cluster").style.opacity = "1"; });
+    ctx.later(2450, () => pop(ctx.el("node-1"), "translateY(16px)"));
+    ctx.later(2650, () => pop(ctx.el("node-2"), "translateY(16px)"));
+    ctx.later(3100, () => pop(ctx.el("pool"), "translateX(-40px)"));
+    ctx.later(3700, () => { ctx.el("arrows").style.opacity = "1"; });
+
+    // Then actors keep moving: resume into free slots, suspend back to storage
+    const fly = ctx.el("fly");
+    const flyTo = (x1, y1, x2, y2) => {
+      fly.style.transition = "none";
+      fly.style.opacity = "1";
+      fly.style.transform = `translate(${x1}px, ${y1}px)`;
+      fly.getBoundingClientRect();
+      fly.style.transition = "transform 0.95s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease";
+      fly.style.transform = `translate(${x2}px, ${y2}px)`;
+    };
+    const ALL = [];
+    for (let n = 0; n < 3; n++) for (let w = 0; w < 2; w++) for (let k = 0; k < 3; k++) ALL.push([n, w, k]);
+    const pick = (wantFilled) => {
+      const opts = ALL.filter(([n, w, k]) => filled.has(`${n}-${w}-${k}`) === wantFilled);
+      return opts[Math.floor(Math.random() * opts.length)];
+    };
+    let resumeNext = true;
+    ctx.later(4300, () => {
+      ctx.every(1400, () => {
+        const doResume = filled.size <= 6 || (resumeNext && filled.size < 14);
+        resumeNext = !resumeNext;
+        if (doResume) {
+          const [n, w, k] = pick(false);
+          const [x1, y1] = poolCenter();
+          const [x2, y2] = slotCenter(n, w, k);
+          flyTo(x1, y1, x2, y2);
+          ctx.later(1000, () => {
+            fly.style.opacity = "0";
+            filled.add(`${n}-${w}-${k}`);
+            pop(ctx.el(`s-${n}-${w}-${k}`), "scale(0.8)");
+          });
+        } else {
+          const [n, w, k] = pick(true);
+          filled.delete(`${n}-${w}-${k}`);
+          ctx.el(`s-${n}-${w}-${k}`).style.opacity = "0";
+          const [x1, y1] = slotCenter(n, w, k);
+          const [x2, y2] = poolCenter();
+          flyTo(x1, y1, x2, y2);
+          ctx.later(1000, () => { fly.style.opacity = "0"; });
+        }
+      });
+    });
   }
 };

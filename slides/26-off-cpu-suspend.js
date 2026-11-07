@@ -46,8 +46,18 @@ export default {
     <rect id="s33-pkt-bg" x="-86" y="-20" width="172" height="38" rx="19" style="fill: var(--s-amber); stroke: #ffffff; stroke-width: 2" />
     <text id="s33-pkt-txt" x="0" y="5" text-anchor="middle" font-size="14.5" font-weight="700" class="mono" style="fill: #1e293b">SuspendActor</text>
   </g>
+
+  <!-- HIDDEN: proposed to cut (covered by slides 24-25); discuss with Tim before removing -->
+  <g id="hidden-overlay">
+    <rect x="64" y="148" width="1472" height="656" rx="18" style="fill: var(--s-bg); opacity: 0.82" />
+    <rect x="460" y="372" width="680" height="196" rx="24" style="fill: var(--s-card); stroke: var(--s-red); stroke-width: 3; stroke-dasharray: 12 8" />
+    <text x="800" y="446" text-anchor="middle" font-size="48" font-weight="800" letter-spacing="8" style="fill: var(--s-red-dark)">HIDDEN</text>
+    <text x="800" y="494" text-anchor="middle" font-size="21" font-weight="700" style="fill: var(--s-text)">Proposed to cut: already covered by slides 24 and 25</text>
+    <text x="800" y="530" text-anchor="middle" font-size="18" style="fill: var(--s-muted)">Keep for now, discuss with Tim before removing</text>
+  </g>
   `,
   animate: (ctx) => {
+    ctx.el("bottom-callout").classList.add("is-hidden");
     const a3Box = ctx.el("s33-a3-box");
     const a3Title = ctx.el("s33-a3-title");
     const a3Sub = ctx.el("s33-a3-sub");

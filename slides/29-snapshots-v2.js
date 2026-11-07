@@ -1,82 +1,236 @@
 export default {
   chapter: 5,
-  short: "29. Snapshots v2",
+  short: "29. Wake Up Fast, Anywhere",
   speaker: "DIMA",
-  kicker: "GOAL: SPEED + DENSITY · LIFECYCLE V2",
-  title: "Goal: Speed — Lifecycle v2: Layered Snapshots & Locality",
+  kicker: "GOAL: SPEED",
+  title: "Wake up fast, anywhere",
   accent: "var(--s-blue)",
-  headline: "3 Keyed Snapshot Layers (Graceful Fallback)  +  2-Tier Locality Ladder (Local -> Cloud)",
-  body1: "Left: Memory & Rootfs act as CPUID/runtime-keyed accelerators over portable Attached Volumes.",
-  body2: "Right: Local Snapshot enables ~100ms same-node wake; async upload frees local disk for any-node resume.",
-  notes: "Under the hood, Actor Lifecycle makes wakeups fast and resilient in two ways. First, snapshots are split into three layers: Memory State, Rootfs Delta, and Attached Volumes — if CPUID or runtime upgraded, upper layers degrade cleanly as a cache miss. Second, snapshots land locally first for ~100ms resumes, then upload asynchronously to durable cloud storage and release local disk so the actor can resume on any node.",
+  headline: "An actor's truth is its image and volumes; memory and the container layer are accelerators",
+  body1: "On resume, every layer that still matches is reused. A new CPU skips memory; a new image keeps only volumes.",
+  body2: "Snapshots sit in the node's local cache, then upload in the background. No room on that node? A new worker downloads it.",
+  notes: "Let's zoom in on a snapshot. This is where Speed comes from\nAn actor's truth is small: its image and its volumes. Memory and the container layer are just accelerators\nOn resume, we reuse every layer that still matches\nNew CPU? Memory is skipped. New image? Only the volumes come back. Either way, the actor wakes up\nNow, where does the snapshot live?\nFirst it stays in a local cache on the node. Later, in the background, it's uploaded to durable storage\nOn resume, we go back to the same node if the snapshot is still in its local cache and the node has room. That's the fastest path\nOtherwise, we pick a new worker, and it downloads the snapshot from durable storage",
   svg: `
-  <rect x="76" y="160" width="692" height="508" rx="48" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 2.2" />
-  <text x="422" y="222" text-anchor="middle" font-size="29" font-weight="700">3 Snapshot Layers</text>
-  <text id="s36-layer-mode" x="422" y="254" text-anchor="middle" font-size="16" font-weight="700" style="fill: var(--s-green-dark)">✓ Target node matches CPUID &amp; runtime -&gt; Layer 1 HIT (~100ms)</text>
-  <g id="s36-l1" class="fade-group">
-    <rect id="s36-l1-box" class="smooth-box" x="132" y="276" width="580" height="110" rx="8" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 2.6" />
-    <text x="422" y="324" text-anchor="middle" font-size="25" font-weight="700">1. Memory State</text>
-    <text id="s36-l1-sub" x="422" y="358" text-anchor="middle" font-size="18" style="fill: var(--s-muted)">Process memory &amp; CPU registers (Key: CPUID + Runtime)</text>
+  <!-- ============ Panel 1: inside a snapshot (static) ============ -->
+  <rect x="64" y="208" width="696" height="510" rx="20" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 1.8" />
+  <text x="96" y="250" font-size="16" font-weight="800" letter-spacing="1.5" style="fill: var(--s-muted)">1 · INSIDE A SNAPSHOT</text>
+
+  <g id="ly-m" class="fade-group" style="opacity: 0">
+    <rect x="96" y="276" width="632" height="124" rx="16" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.4" />
+    <text x="124" y="326" font-size="26" font-weight="800" style="fill: var(--s-purple-dark)">Memory</text>
+    <text x="124" y="360" font-size="17" style="fill: var(--s-muted)">running state</text>
+    <rect x="586" y="294" width="122" height="30" rx="15" style="fill: var(--s-card); stroke: var(--s-border); stroke-width: 1.6" />
+    <text x="647" y="314" text-anchor="middle" font-size="14" font-weight="800" style="fill: var(--s-muted)">accelerator</text>
+    <text x="392" y="367" text-anchor="end" font-size="14" font-weight="700" style="fill: var(--s-muted)">needs the same:</text>
+    <rect x="400" y="348" width="120" height="28" rx="14" style="fill: var(--s-card); stroke: var(--s-purple); stroke-width: 1.4" />
+    <text class="mono" x="460" y="367" text-anchor="middle" font-size="13" font-weight="800" style="fill: var(--s-purple-dark)">CPU</text>
+    <rect x="526" y="348" width="80" height="28" rx="14" style="fill: var(--s-card); stroke: var(--s-purple); stroke-width: 1.4" />
+    <text class="mono" x="566" y="367" text-anchor="middle" font-size="13" font-weight="800" style="fill: var(--s-purple-dark)">sandbox</text>
+    <rect x="612" y="348" width="96" height="28" rx="14" style="fill: var(--s-card); stroke: var(--s-purple); stroke-width: 1.4" />
+    <text class="mono" x="660" y="367" text-anchor="middle" font-size="13" font-weight="800" style="fill: var(--s-purple-dark)">image</text>
   </g>
-  <g id="s36-l2" class="fade-group">
-    <rect id="s36-l2-box" class="smooth-box" x="132" y="406" width="580" height="110" rx="8" style="fill: var(--s-blue-box); stroke: var(--s-blue); stroke-width: 2.4" />
-    <text x="422" y="454" text-anchor="middle" font-size="25" font-weight="700">2. Rootfs Delta</text>
-    <text x="422" y="488" text-anchor="middle" font-size="18" style="fill: var(--s-muted)">Writable container filesystem layer (Key: Base OCI)</text>
+  <g id="ly-c" class="fade-group" style="opacity: 0">
+    <rect x="96" y="416" width="632" height="124" rx="16" style="fill: var(--s-blue-fill); stroke: var(--s-blue); stroke-width: 2.4" />
+    <text x="124" y="466" font-size="26" font-weight="800" style="fill: var(--s-blue-dark)">Container layer</text>
+    <text x="124" y="500" font-size="17" style="fill: var(--s-muted)">writes on top of the image</text>
+    <rect x="586" y="434" width="122" height="30" rx="15" style="fill: var(--s-card); stroke: var(--s-border); stroke-width: 1.6" />
+    <text x="647" y="454" text-anchor="middle" font-size="14" font-weight="800" style="fill: var(--s-muted)">accelerator</text>
+    <text x="604" y="507" text-anchor="end" font-size="14" font-weight="700" style="fill: var(--s-muted)">needs the same:</text>
+    <rect x="612" y="488" width="96" height="28" rx="14" style="fill: var(--s-card); stroke: var(--s-blue); stroke-width: 1.4" />
+    <text class="mono" x="660" y="507" text-anchor="middle" font-size="13" font-weight="800" style="fill: var(--s-blue-dark)">image</text>
   </g>
-  <g id="s36-l3" class="fade-group">
-    <rect x="132" y="536" width="580" height="110" rx="8" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.4" />
-    <text x="422" y="584" text-anchor="middle" font-size="25" font-weight="700">3. Attached Volumes</text>
-    <text x="422" y="618" text-anchor="middle" font-size="18" style="fill: var(--s-muted)">External persistent volumes (Always Portable)</text>
+  <g id="ly-v" class="fade-group" style="opacity: 0">
+    <rect x="96" y="556" width="632" height="124" rx="16" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.4" />
+    <text x="124" y="606" font-size="26" font-weight="800" style="fill: var(--s-amber-dark)">Volumes</text>
+    <text x="124" y="640" font-size="17" style="fill: var(--s-muted)">your data, like the home directory</text>
+    <rect x="608" y="574" width="100" height="30" rx="15" style="fill: var(--s-green)" />
+    <text x="658" y="594" text-anchor="middle" font-size="14" font-weight="800" style="fill: var(--s-card)">truth</text>
+    <text x="708" y="647" text-anchor="end" font-size="14" font-weight="700" style="fill: var(--s-muted)">works anywhere</text>
   </g>
-  <rect x="832" y="160" width="692" height="508" rx="48" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 2.2" />
-  <text x="1178" y="222" text-anchor="middle" font-size="29" font-weight="700">Snapshot Locality</text>
-  <path id="s36-loc-top" class="smooth-box" d="M 912 296 C 912 268, 1444 268, 1444 296 L 1444 402 C 1444 430, 912 430, 912 402 Z" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 2.6" />
-  <ellipse cx="1178" cy="296" rx="266" ry="20" style="fill: var(--s-green-fill); stroke: var(--s-green); stroke-width: 2.6" />
-  <text x="1178" y="352" text-anchor="middle" font-size="25" font-weight="700">Local Snapshot (Same Node)</text>
-  <text x="1178" y="388" text-anchor="middle" font-size="20" font-weight="600" style="fill: var(--s-green)">Fast Resume (~100ms)</text>
-  <line x1="1178" y1="424" x2="1178" y2="520" stroke="#1e293b" stroke-width="3.6" marker-end="url(#arr-dark)" />
-  <rect x="944" y="440" width="468" height="56" rx="14" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.2" />
-  <text x="1178" y="476" text-anchor="middle" font-size="20" font-weight="700">Async upload &amp; release local</text>
-  <path id="s36-loc-bot" class="smooth-box" d="M 912 544 C 912 516, 1444 516, 1444 544 L 1444 634 C 1444 662, 912 662, 912 634 Z" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.6" />
-  <ellipse cx="1178" cy="544" rx="266" ry="20" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.6" />
-  <text x="1178" y="594" text-anchor="middle" font-size="25" font-weight="700">Durable Storage (Cloud)</text>
-  <text x="1178" y="628" text-anchor="middle" font-size="20" font-weight="600" style="fill: var(--s-purple)">Resume on Any Node</text>
-  <g id="s36-pkt" class="mover" style="opacity: 0; transform: translate(1178px, 360px)">
-    <rect x="-92" y="-18" width="184" height="36" rx="18" style="fill: var(--s-purple); stroke: #ffffff; stroke-width: 2" />
-    <text x="0" y="5" text-anchor="middle" font-size="13.5" font-weight="700" class="mono" style="fill: #ffffff">Upload -&gt; GCS / S3</text>
+
+  <!-- ============ Panel 2: where it wakes up ============ -->
+  <g id="right" class="fade-group" style="opacity: 0">
+    <rect x="792" y="208" width="744" height="510" rx="20" style="fill: var(--s-surface); stroke: var(--s-border); stroke-width: 1.8" />
+    <text x="824" y="250" font-size="16" font-weight="800" letter-spacing="1.5" style="fill: var(--s-muted)">2 · WHERE IT WAKES UP</text>
+
+    <!-- node A -->
+    <rect x="824" y="274" width="300" height="196" rx="16" style="fill: var(--s-card); stroke: var(--s-border); stroke-width: 2" />
+    <text x="848" y="308" font-size="18" font-weight="800" style="fill: var(--s-muted)">node A</text>
+    <rect x="848" y="334" width="116" height="110" rx="14" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.6; stroke-dasharray: 7 5; opacity: 0.6" />
+    <g id="a-act" class="fade-group" style="opacity: 0">
+      <rect x="848" y="334" width="116" height="110" rx="14" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.4" />
+      <circle cx="906" cy="378" r="15" style="fill: var(--s-purple)" />
+      <rect x="886" y="398" width="40" height="20" rx="10" style="fill: var(--s-purple)" />
+    </g>
+    <path d="M 994 350 V 420 A 55 11 0 0 0 1104 420 V 350" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.2" />
+    <ellipse cx="1049" cy="350" rx="55" ry="11" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.2" />
+    <text x="1049" y="454" text-anchor="middle" font-size="14" font-weight="800" style="fill: var(--s-amber-dark)">local cache</text>
+      <g id="a-snap" class="fade-group" style="opacity: 0">
+        <path d="M 1029 362 h 28 l 12 12 v 36 h -40 Z" style="fill: var(--s-amber); stroke: var(--s-amber-dark); stroke-width: 1.4" />
+        <path d="M 1057 362 v 12 h 12" fill="none" style="stroke: var(--s-amber-dark); stroke-width: 1.4" />
+        <text id="a-snap-v" x="1049" y="398" text-anchor="middle" font-size="16" font-weight="800" style="fill: var(--s-card)">v1</text>
+      </g>
+
+    <!-- durable storage -->
+    <line x1="1104" y1="390" x2="1186" y2="390" style="stroke: var(--s-amber); stroke-width: 2.2; stroke-dasharray: 7 5" />
+    <path d="M 1190 300 V 392 A 150 18 0 0 0 1490 392 V 300" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.4" />
+    <ellipse cx="1340" cy="300" rx="150" ry="18" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.4" />
+    <text x="1300" y="356" text-anchor="middle" font-size="19" font-weight="800" style="fill: var(--s-amber-dark)">durable storage</text>
+      <g id="s-snap" class="fade-group" style="opacity: 0">
+        <path d="M 1426 326 h 28 l 12 12 v 36 h -40 Z" style="fill: var(--s-amber); stroke: var(--s-amber-dark); stroke-width: 1.4" />
+        <path d="M 1454 326 v 12 h 12" fill="none" style="stroke: var(--s-amber-dark); stroke-width: 1.4" />
+        <text id="s-snap-v" x="1446" y="362" text-anchor="middle" font-size="16" font-weight="800" style="fill: var(--s-card)">v1</text>
+      </g>
+    <line x1="1415" y1="410" x2="1415" y2="496" style="stroke: var(--s-amber); stroke-width: 2.2; stroke-dasharray: 7 5" />
+
+    <!-- node B -->
+    <rect x="1190" y="500" width="300" height="196" rx="16" style="fill: var(--s-card); stroke: var(--s-border); stroke-width: 2" />
+    <text x="1214" y="534" font-size="18" font-weight="800" style="fill: var(--s-muted)">node B</text>
+    <rect x="1214" y="560" width="116" height="110" rx="14" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.6; stroke-dasharray: 7 5; opacity: 0.6" />
+    <g id="b-act" class="fade-group" style="opacity: 0">
+      <rect x="1214" y="560" width="116" height="110" rx="14" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.4" />
+      <circle cx="1272" cy="604" r="15" style="fill: var(--s-purple)" />
+      <rect x="1252" y="624" width="40" height="20" rx="10" style="fill: var(--s-purple)" />
+    </g>
+    <path d="M 1360 576 V 646 A 55 11 0 0 0 1470 646 V 576" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.2" />
+    <ellipse cx="1415" cy="576" rx="55" ry="11" style="fill: var(--s-amber-fill); stroke: var(--s-amber); stroke-width: 2.2" />
+    <text x="1415" y="680" text-anchor="middle" font-size="14" font-weight="800" style="fill: var(--s-amber-dark)">local cache</text>
+      <g id="b-snap" class="fade-group" style="opacity: 0">
+        <path d="M 1395 588 h 28 l 12 12 v 36 h -40 Z" style="fill: var(--s-amber); stroke: var(--s-amber-dark); stroke-width: 1.4" />
+        <path d="M 1423 588 v 12 h 12" fill="none" style="stroke: var(--s-amber-dark); stroke-width: 1.4" />
+        <text id="b-snap-v" x="1415" y="624" text-anchor="middle" font-size="16" font-weight="800" style="fill: var(--s-card)">v1</text>
+      </g>
+
+    <!-- idle clock -->
+    <g id="clock" class="fade-group" style="opacity: 0">
+      <circle cx="858" cy="642" r="24" style="fill: var(--s-card); stroke: var(--s-muted); stroke-width: 2.4" />
+      <line x1="858" y1="642" x2="858" y2="626" style="stroke: var(--s-muted); stroke-width: 2.4" stroke-linecap="round" />
+      <line id="clk-hand" x1="858" y1="642" x2="858" y2="622" style="stroke: var(--s-red); stroke-width: 2.4" stroke-linecap="round" />
+      <text id="clk-txt" class="mono" x="894" y="649" font-size="18" font-weight="800" style="fill: var(--s-text)">idle 0 min</text>
+    </g>
+
+    <!-- one caption at a time -->
+    <text id="cap" class="fade-group" x="980" y="560" text-anchor="middle" font-size="21" font-weight="800" style="fill: var(--s-text); opacity: 0">running on node A</text>
+  </g>
+
+  <g id="pkt" class="mover" style="opacity: 0; transform: translate(0px, 0px)">
+    <rect id="pkt-bg" x="-58" y="-17" width="116" height="34" rx="17" style="fill: var(--s-amber); stroke: #ffffff; stroke-width: 2" />
+    <text id="pkt-txt" class="mono" x="0" y="5" text-anchor="middle" font-size="14" font-weight="700" style="fill: #1e293b">snapshot</text>
   </g>
   `,
   animate: (ctx) => {
-    let upgradePhase = false;
-    const l1Box = ctx.el("s36-l1-box");
-    const l1Sub = ctx.el("s36-l1-sub");
-    const modeTxt = ctx.el("s36-layer-mode");
-    const pkt = ctx.el("s36-pkt");
+    ctx.el("bottom-callout").classList.add("is-hidden");
 
-    const runS36 = () => {
-      if (!upgradePhase) {
-        modeTxt.style.fill = "var(--s-green-dark)";
-        modeTxt.textContent = "✓ Target node matches CPUID & runtime -> Layer 1 Memory HIT (~100ms)";
-        l1Box.style.opacity = "1";
-        l1Sub.textContent = "Process memory & CPU registers (HIT -> Instant Wake)";
-      } else {
-        modeTxt.style.fill = "var(--s-amber-dark)";
-        modeTxt.textContent = "↷ Node upgraded -> Layer 1 clean cache miss, Rootfs + Volumes intact!";
-        l1Box.style.opacity = "0.38";
-        l1Sub.textContent = "Key mismatch -> Gracefully skipped (0 bricked actors)";
-      }
-
-      pkt.style.transition = "none";
-      pkt.style.opacity = "1";
-      pkt.style.transform = "translate(1178px, 376px)";
-      pkt.getBoundingClientRect();
-      pkt.style.transition = "transform 1.1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease";
-      pkt.style.transform = "translate(1178px, 585px)";
-
-      ctx.later(1450, () => { pkt.style.opacity = "0"; });
-      upgradePhase = !upgradePhase;
+    const pop = (node, from) => {
+      node.style.transformBox = "fill-box";
+      node.style.transformOrigin = "center";
+      node.style.transition = "none";
+      node.style.opacity = "0";
+      node.style.transform = from;
+      node.getBoundingClientRect();
+      node.style.transition = "";
+      node.style.opacity = "1";
+      node.style.transform = "none";
     };
-    runS36();
-    ctx.every(2900, runS36);
+
+    // Panel 1: build the three layers bottom to top, then hold still
+    ["v", "c", "m"].forEach((k, i) => ctx.later(200 + i * 260, () => pop(ctx.el(`ly-${k}`), "translateY(24px)")));
+    ctx.later(1300, () => { ctx.el("right").style.opacity = "1"; });
+
+    // Panel 2: one actor's life: local cache back and forth, then durable storage, then node B
+    const send = (x1, y1, x2, y2) => {
+      ctx.movePkt("pkt", "pkt-bg", "pkt-txt", "snapshot", "var(--s-amber)", "#1e293b", x1, y1, x2, y2, 116);
+      ctx.el("pkt").style.transition = "transform 0.95s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease";
+    };
+    const hidePkt = () => { ctx.el("pkt").style.opacity = "0"; };
+    const show = (id) => pop(ctx.el(id), "scale(0.7)");
+    const hide = (id) => { ctx.el(id).style.opacity = "0"; };
+    const caption = (text, color) => {
+      const cap = ctx.el("cap");
+      cap.style.opacity = "0";
+      ctx.later(200, () => {
+        cap.textContent = text;
+        cap.style.fill = color || "var(--s-text)";
+        cap.style.opacity = "1";
+      });
+    };
+    // Anchor points: actor slot, local cache, durable storage
+    const A_SLOT = [906, 389], A_CACHE = [1049, 405];
+    const STORE = [1340, 400];
+    const B_SLOT = [1272, 615], B_CACHE = [1415, 631];
+    const move = (from, to) => send(from[0], from[1], to[0], to[1]);
+
+    const clockHand = ctx.el("clk-hand");
+    const clockTxt = ctx.el("clk-txt");
+    const TO_UPLOAD = ["idle 0 min", "idle 1 min", "idle 3 min", "idle 5 min"];
+    const TO_FREE = ["idle 5 min", "idle 10 min", "idle 20 min", "idle 30 min"];
+
+    const setVer = (id, v) => { ctx.el(`${id}-v`).textContent = v; };
+    const bump = (id, v) => { setVer(id, v); show(id); };
+    const runClock = (ms, labels) => {
+      show("clock");
+      ctx.animateProgress(ms, (t) => {
+        const ang = 3 * t * 2 * Math.PI;
+        clockHand.setAttribute("x2", (858 + 20 * Math.sin(ang)).toFixed(1));
+        clockHand.setAttribute("y2", (642 - 20 * Math.cos(ang)).toFixed(1));
+        clockTxt.textContent = labels[Math.min(labels.length - 1, Math.floor(t * labels.length))];
+      });
+    };
+    const moveV = (from, to, v) => {
+      move(from, to);
+      ctx.el("pkt-txt").textContent = `snapshot ${v}`;
+    };
+
+    const cycle = () => {
+      ["a-snap", "b-snap", "a-act", "b-act", "clock"].forEach(hide);
+      bump("s-snap", "v1");
+      caption("v1 in durable storage", "var(--s-amber-dark)");
+
+      // Resume on node A: download v1 into the local cache, then run
+      ctx.later(1800, () => { moveV(STORE, A_CACHE, "v1"); caption("resume: v1 downloaded to node A", "var(--s-blue-dark)"); });
+      ctx.later(2800, () => { hidePkt(); bump("a-snap", "v1"); });
+      ctx.later(3400, () => moveV(A_CACHE, A_SLOT, "v1"));
+      ctx.later(4400, () => { hidePkt(); show("a-act"); caption("running on node A", "var(--s-purple-dark)"); });
+
+      // Suspend: v2 in the local cache, storage still has v1
+      ctx.later(5800, () => { hide("a-act"); moveV(A_SLOT, A_CACHE, "v2"); caption("suspend: v2 local, v1 in storage", "var(--s-amber-dark)"); });
+      ctx.later(6800, () => { hidePkt(); bump("a-snap", "v2"); });
+
+      // Resume on the same node from local v2
+      ctx.later(8000, () => { moveV(A_CACHE, A_SLOT, "v2"); caption("resume: v2 from local cache", "var(--s-green-dark)"); });
+      ctx.later(9000, () => { hidePkt(); show("a-act"); });
+
+      // Suspend: v3 local; after a while, v3 is uploaded
+      ctx.later(10200, () => { hide("a-act"); moveV(A_SLOT, A_CACHE, "v3"); caption("suspend: v3 local, v1 in storage", "var(--s-amber-dark)"); });
+      ctx.later(11200, () => { hidePkt(); bump("a-snap", "v3"); });
+      ctx.later(11800, () => { runClock(1400, TO_UPLOAD); caption("idle on node A", "var(--s-text)"); });
+      ctx.later(13400, () => { moveV(A_CACHE, STORE, "v3"); caption("uploaded: v3 in storage", "var(--s-amber-dark)"); });
+      ctx.later(14400, () => { hidePkt(); bump("s-snap", "v3"); hide("clock"); });
+
+      // Resume: same node again, from local v3
+      ctx.later(15400, () => { moveV(A_CACHE, A_SLOT, "v3"); caption("resume: v3 from local cache", "var(--s-green-dark)"); });
+      ctx.later(16400, () => { hidePkt(); show("a-act"); });
+
+      // Suspend: v4 local, v3 in storage; later v4 is uploaded
+      ctx.later(17400, () => { hide("a-act"); moveV(A_SLOT, A_CACHE, "v4"); caption("suspend: v4 local, v3 in storage", "var(--s-amber-dark)"); });
+      ctx.later(18400, () => { hidePkt(); bump("a-snap", "v4"); });
+      ctx.later(19000, () => { runClock(1400, TO_UPLOAD); caption("idle on node A", "var(--s-text)"); });
+      ctx.later(20600, () => { moveV(A_CACHE, STORE, "v4"); caption("uploaded: v4 in both places", "var(--s-amber-dark)"); });
+      ctx.later(21600, () => { hidePkt(); bump("s-snap", "v4"); });
+      ctx.later(22200, () => { runClock(1400, TO_FREE); caption("idle on node A", "var(--s-text)"); });
+
+      // Local copy freed: v4 only in storage
+      ctx.later(23800, () => { hide("a-snap"); caption("local copy freed: storage only", "var(--s-text)"); });
+      ctx.later(25000, () => hide("clock"));
+
+      // Resume on node B: same as the start, just on another node
+      ctx.later(25600, () => { moveV(STORE, B_CACHE, "v4"); caption("resume: v4 downloaded to node B", "var(--s-blue-dark)"); });
+      ctx.later(26600, () => { hidePkt(); bump("b-snap", "v4"); });
+      ctx.later(27200, () => moveV(B_CACHE, B_SLOT, "v4"));
+      ctx.later(28200, () => { hidePkt(); show("b-act"); caption("running on node B: cycle repeats", "var(--s-purple-dark)"); });
+    };
+    ctx.later(1900, () => {
+      cycle();
+      ctx.every(31200, cycle);
+    });
   }
 };
