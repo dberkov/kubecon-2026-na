@@ -84,20 +84,48 @@ This whole system is built ON and WITH Kubernetes — Workers are Pods, our cont
 ## Slide 20 | 20. 2-Layer CRDs | Speaker: TIM / DIMA
 Agent Substrate is a two-layer system: Platform Admins use Kubernetes CRDs (WorkerPool, SandboxConfig) and ate-controller to provision warm Worker Pods. App Developers use Substrate's gRPC API backed by Postgres to run Actors inside those warm workers with zero etcd bottlenecks.
 
-## Slide 21 | 21. Term: Actor | Speaker: TIM
-Let's introduce five quick terms. First, Actor: an instance of an agent or sandbox environment — think a single agent session — which may be running or suspended.
+## Slide 21 | 21. Term: Actor | Speaker: DIMA
+Let's introduce five quick terms.
+First, Actor:
+This is a sort of stand-in term to cover all the things that can run on Substrate
+Think agents, sandboxed environments, tools, etc.
+This is the MAIN abstraction in Substrate
+You can think of an Actor as a single agent session
 
-## Slide 22 | 22. Term: Template | Speaker: TIM
-Second, ActorTemplate: if an actor is a cookie, this is the cookie cutter. It defines which OCI image to run, arguments, and which sandbox technology to use — such as gVisor or microVMs.
+## Slide 22 | 22. Term: ActorTemplate | Speaker: DIMA
+Second, ActorTemplate:
+If an actor is a cookie, this is the cookie cutter
+It includes details like which sandbox tech, which OCI image to run, arguments, etc.
+Notably, there can be many different templates
+and they can use different sandbox technologies
+such as gVisor or microVMs
 
-## Slide 23 | 23. Term: Worker | Speaker: TIM
-Third, Worker: a running Pod in Kubernetes that actually consumes K8s resources and waits to be told when to start or stop running actors. A worker can run one or many actors.
+## Slide 23 | 23. Term: Worker | Speaker: DIMA
+Third, Worker:
+A worker is a Pod running in Kubernetes, which runs actors
+This is the thing that actually consumes resources from Kubernetes
+It sits around waiting to be told when to start or stop running an actor
+A given worker can run many actors
+A cluster can have many workers
 
-## Slide 24 | 24. Term: Atelet | Speaker: TIM
-Fourth, Atelet: a per-node manager for all the workers on that node. We need this because the control plane cannot talk directly to workers.
+## Slide 24 | 24. Term: Atelet | Speaker: DIMA
+Fourth, Atelet:
+It's a per-node manager (daemon) for all the workers on that node
+We need this because the control plane can't talk directly to workers
+When an actor resumes, atelet pulls the OCI image and downloads the snapshot
+When an actor suspends, it takes the actor's snapshot and uploads it to object storage
+Workers can't do this themselves, because they don't have permission
 
-## Slide 25 | 25. Term: Atenet | Speaker: TIM
-Fifth, Atenet: an ate-enlightened proxy which can trigger actor wakeups upon receipt of traffic. Now, let's look at how those pieces fit together.
+## Slide 25 | 25. Term: Atenet | Speaker: DIMA
+Fifth, Atenet:
+This is the networking layer of Substrate
+It's built on Envoy, and it has two parts
+atenet-router sits in front of the actors
+When a request comes in for a sleeping actor, it wakes the actor up and routes the traffic to the right worker
+atenet-egress sits on the way out
+Every outbound call goes through it: it checks the actor's egress policy and can inject credentials
+So secrets never live inside the sandbox
+Now, let’s look at how those pieces fit together (Handoff to Tim)
 
 ## Slide 26 | 26. Off-CPU Suspend | Speaker: DIMA
 First, Density. We cannot store millions of actors in Kubernetes etcd — so ateapi uses Postgres to store billions of actor records with zero etcd overhead. When an actor goes idle, SuspendActor takes a snapshot, immediately removes the actor from CPU and memory, and returns the Worker slot to the idle pool so the actor costs zero compute while idle.

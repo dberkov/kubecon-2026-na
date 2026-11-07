@@ -1,43 +1,88 @@
 export default {
   chapter: 4,
   short: "21. Term: Actor",
-  speaker: "TIM",
-  kicker: "TERMINOLOGY (1 OF 5)",
-  title: "Actor — An instance of an agent or sandbox (running or suspended)",
+  speaker: "DIMA",
+  kicker: "TERMINOLOGY · 1 OF 5",
+  title: "Actor: one agent session",
   accent: "var(--s-purple)",
-  headline: "Think of an Actor as a single stateful agent session — the core abstraction of Substrate",
-  body1: "Covers conversational agents, coding sandboxes, or stateful tool environments.",
-  body2: "Crucially, an Actor keeps its identity whether it is RUNNING on CPU or SUSPENDED off-CPU.",
-  notes: "Let's introduce five quick terms. First, Actor: an instance of an agent or sandbox environment — think a single agent session — which may be running or suspended.",
+  headline: "Actor is the main thing you run on Substrate",
+  body1: "It covers agents, sandboxed environments, tools, and so on.",
+  body2: "Think of one Actor as one agent session.",
+  notes: "Let's introduce five quick terms.\nFirst, Actor:\nThis is a sort of stand-in term to cover all the things that can run on Substrate\nThink agents, sandboxed environments, tools, etc.\nThis is the MAIN abstraction in Substrate\nYou can think of an Actor as a single agent session",
   svg: `
-  <g id="term-actor-card" class="fade-group">
-    <rect id="term-actor-box" class="smooth-box" x="472" y="344" width="656" height="122" rx="14" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2.8" />
-    <text id="term-actor-title" x="800" y="398" text-anchor="middle" font-size="28" font-weight="700">Actor 1 (Agent / Sandbox)</text>
-    <text id="term-actor-sub" x="800" y="434" text-anchor="middle" font-size="18" font-weight="700" class="mono" style="fill: var(--s-purple)">RUNNING ON CPU</text>
+  <!-- Terminology progress -->
+  <rect x="64" y="176" width="272" height="46" rx="23" style="fill: var(--s-purple)" />
+  <text x="200" y="206" text-anchor="middle" font-size="19" font-weight="800" style="fill: var(--s-card)">Actor</text>
+  <rect x="364" y="176" width="272" height="46" rx="23" style="fill: none; stroke: var(--s-border); stroke-width: 1.4; stroke-dasharray: 6 5" />
+  <text x="500" y="206" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--s-muted); opacity: 0.55">ActorTemplate</text>
+  <rect x="664" y="176" width="272" height="46" rx="23" style="fill: none; stroke: var(--s-border); stroke-width: 1.4; stroke-dasharray: 6 5" />
+  <text x="800" y="206" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--s-muted); opacity: 0.55">Worker</text>
+  <rect x="964" y="176" width="272" height="46" rx="23" style="fill: none; stroke: var(--s-border); stroke-width: 1.4; stroke-dasharray: 6 5" />
+  <text x="1100" y="206" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--s-muted); opacity: 0.55">Atelet</text>
+  <rect x="1264" y="176" width="272" height="46" rx="23" style="fill: none; stroke: var(--s-border); stroke-width: 1.4; stroke-dasharray: 6 5" />
+  <text x="1400" y="206" text-anchor="middle" font-size="18" font-weight="700" style="fill: var(--s-muted); opacity: 0.55">Atenet</text>
+
+  <!-- One actor, many shapes -->
+  <g id="tile" class="fade-group" style="opacity: 0">
+    <rect x="560" y="280" width="480" height="380" rx="28" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 3" />
+
+    <g id="ic-0" class="fade-group">
+      <rect x="730" y="392" width="140" height="96" rx="24" style="fill: var(--s-purple)" />
+      <polygon points="760,484 748,522 794,486" style="fill: var(--s-purple)" />
+      <circle cx="770" cy="440" r="9" style="fill: var(--s-card)" />
+      <circle cx="800" cy="440" r="9" style="fill: var(--s-card)" />
+      <circle cx="830" cy="440" r="9" style="fill: var(--s-card)" />
+    </g>
+    <g id="ic-1" class="fade-group" style="opacity: 0">
+      <rect x="735" y="385" width="130" height="130" rx="16" style="fill: none; stroke: var(--s-purple); stroke-width: 8" />
+      <rect x="767" y="417" width="66" height="66" rx="8" style="fill: none; stroke: var(--s-purple); stroke-width: 4; stroke-dasharray: 8 6" />
+    </g>
+    <g id="ic-2" class="fade-group" style="opacity: 0">
+      <g transform="rotate(-45 800 450)">
+        <rect x="789" y="452" width="22" height="92" rx="11" style="fill: var(--s-purple)" />
+        <path d="M 819.5 400.2 A 34 34 0 1 1 780.5 400.2" fill="none" style="stroke: var(--s-purple); stroke-width: 16" stroke-linecap="round" />
+      </g>
+    </g>
+
+    <text id="cap" class="fade-group" x="800" y="610" text-anchor="middle" font-size="30" font-weight="700" style="fill: var(--s-purple-dark)">an agent</text>
   </g>
+
+  <text id="tagline" class="fade-group" x="800" y="740" text-anchor="middle" font-size="26" style="fill: var(--s-muted); opacity: 0">The main thing you run on Substrate</text>
   `,
   animate: (ctx) => {
-    const box = ctx.el("term-actor-box");
-    const sub = ctx.el("term-actor-sub");
-    ctx.el("term-actor-title").textContent = "Actor (Agent / Sandbox)";
-    let running = true;
-    const applyState = () => {
-      if (running) {
-        box.style.fill = "var(--s-purple-fill)";
-        box.style.strokeDasharray = "none";
-        sub.style.fill = "var(--s-purple)";
-        sub.textContent = "RUNNING ON CPU";
-      } else {
-        box.style.fill = "var(--s-slot-fill)";
-        box.style.strokeDasharray = "9 6";
-        sub.style.fill = "var(--s-muted)";
-        sub.textContent = "SUSPENDED (0 CPU / 0 RAM)";
-      }
+    ctx.el("bottom-callout").classList.add("is-hidden");
+
+    const pop = (node, from) => {
+      node.style.transformBox = "fill-box";
+      node.style.transformOrigin = "center";
+      node.style.transition = "none";
+      node.style.opacity = "0";
+      node.style.transform = from;
+      node.getBoundingClientRect();
+      node.style.transition = "";
+      node.style.opacity = "1";
+      node.style.transform = "none";
     };
-    applyState();
-    ctx.every(1250, () => {
-      running = !running;
-      applyState();
+
+    ctx.later(150, () => pop(ctx.el("tile"), "scale(0.85)"));
+    ctx.later(900, () => { ctx.el("tagline").style.opacity = "1"; });
+
+    // An Actor can be an agent, a sandbox, or a tool: cycle through them
+    const CAPTIONS = ["an agent", "a sandbox", "a tool"];
+    const cap = ctx.el("cap");
+    let cur = 0;
+    ctx.later(1600, () => {
+      ctx.every(1700, () => {
+        const next = (cur + 1) % 3;
+        ctx.el(`ic-${cur}`).style.opacity = "0";
+        cap.style.opacity = "0";
+        ctx.later(260, () => {
+          pop(ctx.el(`ic-${next}`), "scale(0.7)");
+          cap.textContent = CAPTIONS[next];
+          cap.style.opacity = "1";
+          cur = next;
+        });
+      });
     });
   }
 };
