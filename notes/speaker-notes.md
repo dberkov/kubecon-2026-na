@@ -1,4 +1,4 @@
-# KubeCon NA 2026 — Speaker Notes (Complete Deck: 28 Slides)
+# KubeCon NA 2026 — Speaker Notes (Complete Deck: 29 Slides)
 
 <!--
 HOW TO EDIT THIS FILE:
@@ -146,12 +146,18 @@ So a small pool of workers can serve millions of actors
 Let's zoom in on a snapshot. This is where Speed comes from
 An actor's truth is small: its image and its volumes. Memory and the container layer are just accelerators
 On resume, we reuse every layer that still matches
-New CPU? Memory is skipped. New image? Only the volumes come back. Either way, the actor wakes up
-Now, where does the snapshot live?
-First it stays in a local cache on the node. Later, in the background, it's uploaded to durable storage
-On resume, we go back to the same node if the snapshot is still in its local cache and the node has room. That's the fastest path
-Otherwise, we pick a new worker, and it downloads the snapshot from durable storage
-So that's speed: fast on the same node, and never stuck if it has to move. Tim, want to wrap us up?
+New CPU? Memory is skipped. New image? Only the volumes come back. Either way, the actor wakes up.
 
-## Slide 28 | 28. Thank You! | Speaker: TIM
+## Slide 28 | 28. Managed Agents | Speaker: DIMA
+Let's look at a common use-case.
+This year we have seen a number of managed agent products hit the market
+For example, Managed Agents for Gemini - it's awesome but there's a big problem
+But if you are an enterprise - you almost certainly have rules around who can access your data and how
+Agent Substrate lets you separate the agentic loop (the brains) from the actual untrusted workloads (the hands)
+So, for example, you can get the Gemini managed agents to run its tasks in your own agent substrate
+You run the substrate in your own environment, VPC network, security perimeter
+We showed off Claude Managed Agents using this mode this morning.
+Of course, it's not the ONLY way to run substrate, but it is resonating for a lot of people already
+
+## Slide 29 | 29. Thank You! | Speaker: TIM
 Thank you! Agent Substrate is 100% Apache 2.0 open source at http://ate.dev — we would love for you to try it, break it, and build with us. Happy to take your questions!

@@ -1,7 +1,7 @@
 export default {
   chapter: 5,
   isBookend: true,
-  short: "28. Thank You!",
+  short: "29. Thank You!",
   upNextTitle: "Thank You & Q&A (http://ate.dev)",
   speaker: "TIM",
   notes: "Thank you! Agent Substrate is 100% Apache 2.0 open source at http://ate.dev — we would love for you to try it, break it, and build with us. Happy to take your questions!",
