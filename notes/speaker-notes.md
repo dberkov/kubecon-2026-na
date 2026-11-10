@@ -3,17 +3,26 @@
 <!--
 HOW TO EDIT THIS FILE:
 1. Edit the text under any `## Slide N` (or `## Beat N`) heading in VS Code, Vim, or any editor and press Save.
-2. To change who speaks on a beat, edit `Speaker: TIM`, `Speaker: DIMA`, or `Speaker: TIM & DIMA` in the heading (the Presenter Console badge & handoff alerts update automatically!).
-3. Multi-line paragraphs and bullet points are preserved as-is in the Presenter Console.
-4. When deployed via `./kind-deploy/deploy.sh`, `notes/speaker-notes.md` is directory-mounted into `kind` — saving in VS Code/Vim updates your Presenter Console live (~2s auto-poll) with ZERO Docker rebuilds!
+2. To change who speaks on a slide, edit `Speaker: TIM`, `Speaker: DIMA`, or `Speaker: TIM & DIMA` in the heading.
+3. When deployed via `./kind-deploy/deploy.sh` or `./scripts/serve.sh`, saving `notes/speaker-notes.md` updates your Presenter Console live with ZERO rebuilds!
 -->
 
 ## Slide 1 | 1. Title | Speaker: TIM
-Late last year and early this year, we both started looking at the same set of problems from slightly different angles — and came to the same conclusions. In the next 30 minutes, we'll look at why agents challenge standard Kubernetes and how Agent Substrate fits in.
+* Late last year / early this year, Dima and I both started looking at the same set of problems
+* from slightly different angles
+* Interestingly, we came to the same basic conclusions.
+* Let's look at why agents are a challenge for standard Kubernetes
+* and how Agent Substrate fits in.
 
 ## Slide 2 | 2. K8s Baseline | Speaker: TIM
-Kubernetes is the undisputed standard for deploying container workloads — including AI inference servers, training jobs, and reinforcement learning (RL). Naturally, teams building AI agents want to run them on the same infrastructure. But over the course of this year we saw people struggling: three characteristics immediately stand out.
-Dima has spent a lot of time with these teams. Dima, what did you see?
+* Who here has a kubernetes cluster already?  Or 2?  Or 10?
+* I am biased, but I do believe that one of Kubernetes' main strengths is that it is everywhere
+* And, so far, it can run pretty much everything
+  * including AI inference, training, and reinforcement learning
+* So it is natural that teams building AI agents want to run them on the same infrastructure
+* But over the course of this year what we saw was that people are struggling
+* Three distict characteristics immediately stand out.
+* Dima, what did you see?
 
 ## Slide 3 | 3. Bursty & Idle | Speaker: DIMA
 Thanks, Tim. First, agentic apps tend to be very bursty. 
@@ -32,29 +41,44 @@ Third, they tend to have humans in the loop, which makes them very sensitive to 
 So: bursty, untrusted, and a human waiting on every turn. Tim, what happens when you run that on Kubernetes?
 
 ## Slide 6 | 6. K8s Fractures | Speaker: TIM
-Taken together, these properties can make it problematic to run agents on Kubernetes — at least in the normal way. Before jumping into solutions, let's talk about the state of the art. We have seen this pattern countless times with users.
+* Taken together, these properties make it problematic to run agents on Kubernetes
+* at least in the normal way
+* Before jumping into solutions, let's talk about the state of the art.
+* We have seen this pattern many times with users.
 
 ## Slide 7 | 7. New Chat | Speaker: TIM
-Some event causes the need for a new instance of an agent or sandbox environment — for example, a user starts a new chat.
+* Some event causes the need for a new instance of an agent or sandbox environment
+* for example, a user starts a new chat.
 
 ## Slide 8 | 8. Cold Start | Speaker: TIM
-That requires instantiating an agent in its own sandbox, so we spin up a Pod. Depending on what the agent does at startup, it could be a few seconds or much longer. So we wait.
+* That requires instantiating an agent in its own sandbox
+* so we spin up a Pod
+* Depending on what the agent does at startup, it could be a few seconds or much longer
+* So we wait.
 
 ## Slide 9 | 9. First Turn | Speaker: TIM
-Eventually the pod is ready, and the user can chat with it. The message is sent to the pod, a response comes back, and one turn is done.
+* Eventually the pod is ready, and the user can chat with it
+* The message is sent to the pod, a response comes back
+* and one turn is done.
 
 ## Slide 10 | 10. Chat Loop | Speaker: TIM
 This loop might happen many times — think about a typical chat session with many round-trips.
 
 ## Slide 11 | 11. Idle Hold | Speaker: TIM
-Because pod startup is not free, the pod usually waits for another event Just In Case — from tens of seconds to tens of minutes. While it waits, the resources that pod consumes are blocked.
+* Because pod startup is not free, the pod usually waits for another event
+* Just In Case
+* This could be tens of seconds to tens of minutes
+* While it waits, the resources that pod consumes are wated
 
 ## Slide 12 | 12. Kill & Lose | Speaker: TIM
-Eventually the user stops sending input, the timeout expires, conversation history is saved somewhere else, and the pod is terminated. Later, when the user comes back, we have to start this all over again.
+* Eventually the user stops sending input
+* the timeout expires, conversation history is saved somewhere
+* and the pod is terminated. Later, when the user comes back, we have to start this all over again.
 
 ## Slide 13 | 13. Cluster Scale | Speaker: TIM
-This happens for every agent instance: poor utilization, long-tail UX latency, K8s scheduling throughput struggles on bursts, and a single Kubernetes cluster can only host a few hundred thousand pods.
-That's the simple approach. The teams who hit these walls first went a different way. Dima?
+* This happens for every instance
+* poor utilization and long-tail UX latency
+* The teams who hit these walls first went a different way. Dima?
 
 ## Slide 14 | 14. DIY Giant Pod | Speaker: DIMA
 A second approach we saw, was mostly from very sophisticated users
@@ -74,7 +98,8 @@ Like startups
 So today you choose between a bad experience and building your own orchestrator. Tim?
 
 ## Slide 16 | 16. Agent Substrate | Speaker: TIM
-Exactly. And this is the point where we decided we need to do better. We do not think people who just want to run agents should have to choose between a decent UX or an affordable bill, or between hitting hard limits or maintaining a proprietary orchestrator. That is why we built and open-sourced Agent Substrate.
+* We need to do better
+* We do not think people who just want to run agents should have to choose between a decent UX or an affordable bill, or between hitting hard limits or maintaining a proprietary orchestrator. That is why we built and open-sourced Agent Substrate.
 
 ## Slide 17 | 17. Goals | Speaker: TIM
 Agent Substrate is designed around three core goals: Security (gVisor/microVM sandbox, SPIFFE ID, zero ambient credentials, locked egress), Density (checkpoint idle agents so they consume ~0 compute), and Speed (wake a suspended agent in hundreds of milliseconds via gRPC).
@@ -130,7 +155,7 @@ atenet-egress sits on the way out
 Every outbound call goes through it: it checks the actor's egress policy and can inject credentials
 So secrets never live inside the sandbox
 And that's the first of the goals Tim showed us: security
-Now, let’s look at the other two goals: density and speed 
+Now, let’s look at the other two goals: density and speed
 
 ## Slide 26 | 26. Millions Asleep, Few Awake | Speaker: DIMA
 Let's go back to our first goal: Density
