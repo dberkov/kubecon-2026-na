@@ -51,17 +51,17 @@ export default {
     <text x="772" y="432" font-size="17" style="fill: var(--s-muted)">untrusted work, in sandboxes</text>
 
     <rect x="772" y="470" width="120" height="120" rx="14" style="fill: var(--s-card); stroke: var(--s-red); stroke-width: 2; stroke-dasharray: 6 4" />
-    <rect id="act-0" class="smooth-box" x="786" y="484" width="92" height="92" rx="12" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-    <circle cx="832" cy="518" r="13" style="fill: var(--s-purple)" />
-    <rect x="814" y="536" width="36" height="18" rx="9" style="fill: var(--s-purple)" />
+    <rect id="act-0" class="smooth-box" x="786" y="484" width="92" height="92" rx="12" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.8; stroke-dasharray: 6 4; opacity: 0.7" />
+    <circle id="act-0-h" class="smooth-box" cx="832" cy="518" r="13" style="fill: var(--s-purple); opacity: 0.35" />
+    <rect id="act-0-b" class="smooth-box" x="814" y="536" width="36" height="18" rx="9" style="fill: var(--s-purple); opacity: 0.35" />
     <rect x="910" y="470" width="120" height="120" rx="14" style="fill: var(--s-card); stroke: var(--s-red); stroke-width: 2; stroke-dasharray: 6 4" />
-    <rect id="act-1" class="smooth-box" x="924" y="484" width="92" height="92" rx="12" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-    <circle cx="970" cy="518" r="13" style="fill: var(--s-purple)" />
-    <rect x="952" y="536" width="36" height="18" rx="9" style="fill: var(--s-purple)" />
+    <rect id="act-1" class="smooth-box" x="924" y="484" width="92" height="92" rx="12" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.8; stroke-dasharray: 6 4; opacity: 0.7" />
+    <circle id="act-1-h" class="smooth-box" cx="970" cy="518" r="13" style="fill: var(--s-purple); opacity: 0.35" />
+    <rect id="act-1-b" class="smooth-box" x="952" y="536" width="36" height="18" rx="9" style="fill: var(--s-purple); opacity: 0.35" />
     <rect x="1048" y="470" width="120" height="120" rx="14" style="fill: var(--s-card); stroke: var(--s-red); stroke-width: 2; stroke-dasharray: 6 4" />
-    <rect id="act-2" class="smooth-box" x="1062" y="484" width="92" height="92" rx="12" style="fill: var(--s-purple-fill); stroke: var(--s-purple); stroke-width: 2" />
-    <circle cx="1108" cy="518" r="13" style="fill: var(--s-purple)" />
-    <rect x="1090" y="536" width="36" height="18" rx="9" style="fill: var(--s-purple)" />
+    <rect id="act-2" class="smooth-box" x="1062" y="484" width="92" height="92" rx="12" style="fill: var(--s-slot-fill); stroke: var(--s-purple); stroke-width: 1.8; stroke-dasharray: 6 4; opacity: 0.7" />
+    <circle id="act-2-h" class="smooth-box" cx="1108" cy="518" r="13" style="fill: var(--s-purple); opacity: 0.35" />
+    <rect id="act-2-b" class="smooth-box" x="1090" y="536" width="36" height="18" rx="9" style="fill: var(--s-purple); opacity: 0.35" />
     <text x="970" y="640" text-anchor="middle" font-size="15" font-weight="800" letter-spacing="1.5" style="fill: var(--s-red-dark)">SANDBOXES</text>
 
     <line x1="1200" y1="530" x2="1272" y2="530" style="stroke: var(--s-amber); stroke-width: 2.4; stroke-dasharray: 7 5" />
@@ -110,15 +110,25 @@ export default {
       ctx.el("pkt").style.transition = "transform 0.95s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease";
     };
     const hidePkt = () => { ctx.el("pkt").style.opacity = "0"; };
+    // Actors sit idle until a task lands, then work until the result is sent back
+    const setActive = (i, on) => {
+      const tile = ctx.el(`act-${i}`);
+      tile.style.fill = on ? "var(--s-purple-fill)" : "var(--s-slot-fill)";
+      tile.style.stroke = on ? "var(--s-blue)" : "var(--s-purple)";
+      tile.style.strokeWidth = on ? "5" : "1.8";
+      tile.style.strokeDasharray = on ? "none" : "6 4";
+      tile.style.opacity = on ? "1" : "0.7";
+      ctx.el(`act-${i}-h`).style.opacity = on ? "1" : "0.35";
+      ctx.el(`act-${i}-b`).style.opacity = on ? "1" : "0.35";
+    };
     let k = 0;
     const roundTrip = () => {
       const i = k % 3;
       k += 1;
-      const act = ctx.el(`act-${i}`);
       const ax = [832, 970, 1108][i];
       send("task", "var(--s-blue)", 470, 470, ax, 470);
-      ctx.later(1000, () => { hidePkt(); act.style.strokeWidth = "5"; act.style.stroke = "var(--s-blue)"; });
-      ctx.later(1900, () => { act.style.strokeWidth = "2"; act.style.stroke = "var(--s-purple)"; send("result", "var(--s-green)", ax, 590, 470, 590); });
+      ctx.later(1000, () => { hidePkt(); setActive(i, true); });
+      ctx.later(1900, () => { setActive(i, false); send("result", "var(--s-green)", ax, 590, 470, 590); });
       ctx.later(2900, hidePkt);
     };
     ctx.later(1700, () => {
