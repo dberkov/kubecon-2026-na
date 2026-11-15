@@ -1,6 +1,6 @@
 export default {
   chapter: 5,
-  short: "26. Millions Asleep, Few Awake",
+  short: "27. Millions Asleep, Few Awake",
   speaker: "DIMA",
   kicker: "GOAL: DENSITY",
   title: "Millions asleep, few awake",

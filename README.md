@@ -23,7 +23,7 @@ Both browser windows synchronize automatically in real time via `BroadcastChanne
 
 ## Repository Structure (Built for Parallel Editing)
 
-Each of the **29 slides** is an independent ES module in [`slides/`](./slides) owning its own SVG diagram, metadata, speaker script, and animation function:
+Each of the **32 slides** is an independent ES module in [`slides/`](./slides) owning its own SVG diagram, metadata, speaker script, and animation function:
 
 ```text
 ├── index.html                  # Presentation stage, Presenter Console & inline note editor
@@ -37,7 +37,7 @@ Each of the **29 slides** is an independent ES module in [`slides/`](./slides) o
 │   ├── manifest.js             # Ordered list of all slides
 │   ├── 01-title.js             # Chapters I–VI: 1 self-contained file per slide!
 │   ├── ...
-│   └── 29-thank-you.js
+│   └── 32-thank-you.js
 ├── notes/
 │   └── speaker-notes.md        # Live-polled Markdown speaker script (~2.5s auto-reload)
 ├── kind-deploy/                # Offline-safe Kubernetes (kind) laptop deployment for live stage

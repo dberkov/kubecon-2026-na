@@ -1,4 +1,4 @@
-# KubeCon NA 2026 — Speaker Notes (Complete Deck: 29 Slides)
+# KubeCon NA 2026: Speaker Notes (Complete Deck: 32 Slides)
 
 <!--
 HOW TO EDIT THIS FILE:
@@ -157,7 +157,19 @@ So secrets never live inside the sandbox
 And that's the first of the goals Tim showed us: security
 Now, let’s look at the other two goals: density and speed
 
-## Slide 26 | 26. Millions Asleep, Few Awake | Speaker: DIMA
+## Slide 26 | 26. Agent Governance | Speaker: DIMA
+Let's go deeper on that first goal: Security and Governance.
+When an agent reads untrusted repos, web pages, or MCP tool outputs, a single prompt injection can hijack the turn.
+So our starting rule is simple: assume the agent inside the sandbox is already compromised.
+On the left, the sandbox holds zero raw credentials, contains syscalls and filesystem access inside gVisor or a microVM, and forces every outbound call out of process.
+On the right, four deterministic controls sit outside the agent loop so the model cannot talk its way past them:
+First, cryptographic Identity per actor via SPIFFE and scoped user OAuth.
+Second, a Registry of verified agents, MCP tools, and skills.
+Third, deterministic Policy guardrails using CEL RBAC, semantic rules, and Model Armor DLP.
+Fourth, an Agent Gateway that governs LLM, MCP, and A2A traffic and swaps real tokens on the wire.
+Best of all, Substrate is open: you can mix first-party Gemini Agent Platform controls with open-source CNCF agentgateway for traffic, LLM, and MCP/A2A routing, and OpenShell for sandbox syscall intercept, out-of-process supervisor, and cluster gateway.
+
+## Slide 27 | 27. Millions Asleep, Few Awake | Speaker: DIMA
 Let's go back to our first goal: Density
 On the previous slides we followed one actor on one node: resume, run, suspend
 Now let's zoom out to the whole cluster
@@ -167,13 +179,13 @@ Only the active actors take a slot on a worker
 When an actor wakes up, it resumes into a free slot. When it goes idle, it's suspended back to storage
 So a small pool of workers can serve millions of actors
 
-## Slide 27 | 27. Wake Up Fast, Anywhere | Speaker: DIMA
+## Slide 28 | 28. Wake Up Fast, Anywhere | Speaker: DIMA
 Let's zoom in on a snapshot. This is where Speed comes from
 An actor's truth is small: its image and its volumes. Memory and the container layer are just accelerators
 On resume, we reuse every layer that still matches
 New CPU? Memory is skipped. New image? Only the volumes come back. Either way, the actor wakes up.
 
-## Slide 28 | 28. Managed Agents | Speaker: DIMA
+## Slide 29 | 29. Managed Agents | Speaker: DIMA
 Let's look at a common use-case.
 This year we have seen a number of managed agent products hit the market
 For example, Managed Agents for Gemini - it's awesome but there's a big problem
@@ -184,5 +196,22 @@ You run the substrate in your own environment, VPC network, security perimeter
 We showed off Claude Managed Agents using this mode this morning.
 Of course, it's not the ONLY way to run substrate, but it is resonating for a lot of people already
 
-## Slide 29 | 29. Thank You! | Speaker: TIM
-Thank you! Agent Substrate is 100% Apache 2.0 open source at http://ate.dev — we would love for you to try it, break it, and build with us. Happy to take your questions!
+## Slide 30 | 30. RL Sandboxes | Speaker: DIMA
+Now let's look at one of the most demanding workloads we run on Agent Substrate: Reinforcement Learning.
+In agentic RL, every training step spawns batch times group isolated sandboxes in parallel to compile code, run tests, and execute shell commands.
+And your expensive GPU or TPU training cluster blocks on the slowest P99 rollout in every single step.
+Across teams scaling RL, three challenges show up immediately:
+First, framework UX: ML researchers work in Python frameworks like verl, Tunix, SkyRL, NeMo Gym, and Harbor, not Kubernetes CRDs. Our open-source sandboxenv-rl SDK gives them a 10-line SandboxFleet interface that plugs into 40+ eval benchmarks like SWE-bench with zero trainer rewrites.
+Second, massive OCI image sprawl: RL datasets pull tens of thousands to over a million distinct task repo images, where 109-second cold pulls stall training. Substrate mounts the guest agent onto unmodified sha256 images with Golden Snapshots, local SSD caching, and GKE Image Streaming for 0.53-second median startup across 36.8K images.
+Third, rapid scale-out from 0 to 1M+ sandboxes: synchronized burst waves saturate kube-apiserver and etcd around 50K pods. Substrate keeps etcd off the hot path, forking gVisor and microVM actors from warm pools at 4,700 sandboxes per second and 190ms fork latency.
+
+## Slide 31 | 31. Serving LLMs (llm-d) | Speaker: TIM
+Sandboxes are only half of running agents in production: those agents also hammer your LLM serving tier on every turn.
+At the PyTorch Conference keynote, we ran a live production demo pairing Agent Substrate with llm-d 1.0: 1,000 concurrent Hermes coding agents inside Substrate sandboxes across 25 GKE nodes, all driving a single llm-d endpoint across vLLM and SGLang on Cloud TPUs with TorchTPU and GPUs.
+Walking through the three stages on the right:
+First, naive Kubernetes round-robin load balancing lands multi-turn agent requests on cold pods, dropping KV-cache hits to around 30 percent and wasting accelerators recomputing long shared repo prefixes.
+Second, llm-d cache-aware routing plus disaggregated prefill and decode and tiered HBM to CPU RAM to Lustre offload sends turns to warm KV replicas, doubling token throughput and cutting time-to-first-token in half.
+Third, llm-d flow control separates Free, Standard, and Pro priority queues at the gateway so bursty background agent loops never starve interactive users, delivering roughly 7x faster Pro latency.
+
+## Slide 32 | 32. Thank You! | Speaker: TIM
+Thank you! Agent Substrate is 100% Apache 2.0 open source at http://ate.dev, and we would love for you to try it, break it, and build with us. Happy to take your questions!
