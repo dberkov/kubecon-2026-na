@@ -1,6 +1,6 @@
 export default {
   chapter: 5,
-  short: "28. Managed Agents",
+  short: "29. Managed Agents",
   speaker: "DIMA",
   kicker: "A COMMON USE CASE",
   title: "Managed brains, your own hands",

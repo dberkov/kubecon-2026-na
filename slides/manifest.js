@@ -23,10 +23,13 @@ import s22 from "./22-term-template.js";
 import s23 from "./23-term-worker.js";
 import s24 from "./24-term-atelet.js";
 import s25 from "./25-term-atenet.js";
-import s26 from "./26-cluster-multiplex.js";
-import s27 from "./27-snapshots-v2.js";
-import s28 from "./28-managed-agents.js";
-import s29 from "./29-thank-you.js";
+import s26 from "./26-agent-governance.js";
+import s27 from "./27-cluster-multiplex.js";
+import s28 from "./28-snapshots-v2.js";
+import s29 from "./29-managed-agents.js";
+import s30 from "./30-rl-sandboxes.js";
+import s31 from "./31-llmd-serving.js";
+import s32 from "./32-thank-you.js";
 
 export const SLIDES = [
   s01,
@@ -58,4 +61,7 @@ export const SLIDES = [
   s27,
   s28,
   s29,
+  s30,
+  s31,
+  s32,
 ];

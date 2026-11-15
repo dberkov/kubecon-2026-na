@@ -4,5 +4,5 @@ export const CHAPTERS = [
   { id: 2, kicker: "Chapter III · Slides 14–16", name: "DIY Monolith -> Substrate" },
   { id: 3, kicker: "Chapter IV · Slides 17–20", name: "Goals, Targets & K8s CRDs" },
   { id: 4, kicker: "Chapter V · Slides 21–25", name: "Core Terminology (5 Terms)" },
-  { id: 5, kicker: "Chapter VI · Slides 26–29", name: "Density, Speed & Security" }
+  { id: 5, kicker: "Chapter VI · Slides 26-32", name: "Security, Scale & Workloads" }
 ];

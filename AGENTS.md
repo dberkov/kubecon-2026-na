@@ -3,7 +3,7 @@
 This repository holds the interactive web presentation for **Dmitry Berkovich (`dberkov`)** and **Tim Hockin (`thockin`)**:
 > **"Kubernetes Solutions for Agent-Shaped Problems"** (KubeCon North America 2026)
 
-The deck is structured as **one self-contained ES module per slide** (`slides/01-*.js` through `slides/29-*.js`) with **zero build step** required during local editing, so Dima and Tim can edit different slides in parallel using separate AI sessions (Jetski, Gemini CLI, Claude Code) without Git merge conflicts.
+The deck is structured as **one self-contained ES module per slide** (`slides/01-*.js` through `slides/32-*.js`) with **zero build step** required during local editing, so Dima and Tim can edit different slides in parallel using separate AI sessions (Jetski, Gemini CLI, Claude Code) without Git merge conflicts.
 
 ---
 
@@ -47,7 +47,7 @@ export default {
 };
 ```
 
-Bookend slides (`01-title.js`, `16-agent-substrate.js`, `29-thank-you.js`) set `isBookend: true` (hiding the shared top header and bottom callout banner) and provide `takeaways: { main, sub1, sub2 }` for the Presenter Console.
+Bookend slides (`01-title.js`, `16-agent-substrate.js`, `32-thank-you.js`) set `isBookend: true` (hiding the shared top header and bottom callout banner) and provide `takeaways: { main, sub1, sub2 }` for the Presenter Console.
 
 ---
 
